@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aplikasi Administrasi Warga RT/RW</title>
+
+    <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
+    
+    <link rel="stylesheet" href="../css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+
+    <style>
+        .sticky-aksi {
+            position: sticky;
+            right: 0;
+            /* z-index diperlukan agar kolom "Aksi" ada di atas sel lain saat di-scroll */
+            z-index: 1; 
+        }
+
+        /* Ini adalah "trade-off" agar kolom aksi bisa menutupi
+           konten yang di-scroll di belakangnya.
+           Kita paskan warnanya agar serasi.
+        */
+
+        /* Atur background untuk header-nya */
+        th.sticky-aksi {
+            background-color: rgba(255, 255, 255, 0.7); /* Sesuaikan dengan background header tabel Anda */
+            z-index: 3; /* Pastikan header di atas segalanya */
+        }
+        
+        /* Atur background untuk sel-sel di baris ganjil */
+        tr:nth-child(odd) td.sticky-aksi {
+            /* Samakan dengan background kartu */
+            background-color: rgba(255, 255, 255, 0.4); 
+        }
+
+        /* Atur background untuk sel-sel di baris genap */
+        tr:nth-child(even) td.sticky-aksi {
+            /* Samakan dengan background baris genap */
+            background-color: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Atur background saat baris di-hover */
+        tr:hover td.sticky-aksi {
+            /* Samakan dengan background hover */
+            background-color: rgba(255, 255, 255, 0.7);
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <header>
+        <h1><i class="bi bi-house-door-fill"></i> Admin RT/RW - Data Warga</h1>
+        <div class="header-right">
+            <span>Halo, <b>Admin</b></span>
+            <button class="btn btn-hapus" onclick="openLogout()"><i class="bi bi-box-arrow-right"></i> Logout</button>
+        </div>
+    </header>
+
+    <div class="sidebar">
+        <a href="#" onclick="showPage('dashboard')"><i class="bi bi-speedometer2"></i> Dashboard</a>
+        <a href="#" onclick="showPage('pencarian')"><i class="bi bi-search"></i> Pencarian Data</a>
+        <a href="#" onclick="showPage('warga')"><i class="bi bi-people-fill"></i> Data Warga</a>
+        <a href="#" onclick="showPage('keluarga')"><i class="bi bi-card-checklist"></i> Data Keluarga</a>
+        <a href="#" onclick="showPage('surat')"><i class="bi bi-envelope-fill"></i> Data Surat</a>
+        <a href="#" onclick="showPage('laporan')"><i class="bi bi-graph-up"></i> Laporan</a>
+        <a href="#" onclick="showPage('profil')"><i class="bi bi-gear-fill"></i> Profil Admin</a>
+    </div>
+
+    <div class="content">
+        <div id="dashboard" class="page">
+            <h2>Dashboard</h2>
+            <div class="dashboard-grid">
+                <div class="stat-card">
+                    <h3>0</h3>
+                    <p>Jumlah Warga</p>
+                </div>
+                <div class="stat-card">
+                    <h3>0</h3>
+                    <p>Kepala Keluarga</p>
+                </div>
+                <div class="stat-card">
+                    <h3>0</h3>
+                    <p>Surat Masuk</p>
+                </div>
+                <div class="stat-card">
+                    <h3>0</h3>
+                    <p>Surat Keluar</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="pencarian" class="page" style="display:none;">
+            <h2>Pencarian Data Warga</h2>
+            
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" placeholder="Masukkan NIK, Nama Warga, atau No. KK..." aria-label="Recipient's username" aria-describedby="button-addon2">
+                <button class="btn btn-primary" type="button" id="button-addon2">
+                    <i class="bi bi-search"></i> Cari
+                </button>
+            </div>
+
+            <div class="card">
+                <p>Hasil pencarian akan muncul di sini.</p>
+            </div>
+        </div>
+
+
+        <div id="warga" class="page" style="display:none;">
+            <h2>Data Warga</h2>
+            <button class="btn btn-tambah" onclick="alert('Form tambah data warga')"><i
+                    class="bi bi-person-plus-fill"></i> Tambah Warga</button>
+            
+            <div class="card">
+                <div class="table-responsive">
+                    <table>
+                        <tr>
+                            <th>No</th>
+                            <th>ID Warga</th>
+                            <th>NIK</th>
+                            <th>Nama</th>
+                            <th>Tempat Lahir</th>
+                            <th>Tanggal Lahir</th>
+                            <th>Umur</th>
+                            <th>Jenis Kelamin</th>
+                            <th>Status</th>
+                            <th>Alamat</th>
+                            <th>Pendidikan</th>
+                            <th>Pekerjaan</th>
+                            <th>No. HP</th>
+                            <th>Aksi</th>
+                        </tr>
+                        <tr>
+                            <td>1</td>
+                            <td>0001</td>
+                            <td>3275012300001</td>
+                            <td>Andi Setiawan</td>
+                            <td>Batam</td>
+                            <td>16 oktober 2005</td>
+                            <td>19 tahun</td>
+                            <td>Laki Laki-Laki</td>
+                            <td>Belum Kawin</td>
+                            <td>Jl. Melati No. 3</td>
+                            <td>SMK</td>
+                            <td>Wirausaha</td>
+                            <td>081266336345</td>
+                            <td><button class="btn btn-edit"><i class="bi bi-pencil-square"></i> Edit</button> <button
+                                    class="btn btn-hapus"><i class="bi bi-trash-fill"></i> Hapus</button></td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>0002</td>
+                            <td>3275012300002</td>
+                            <td>Budi Setiawan</td>
+                            <td>Batam</td>
+                            <td>16 oktober 2005</td>
+                            <td>19 tahun</td>
+                            <td>Laki Laki-Laki</td>
+                            <td>Belum Kawin</td>
+                            <td>Jl. Melati No. 4</td>
+                            <td>SMK</td>
+                            <td>Wirausaha</td>
+                            <td>081266336345</td>
+                            <td><button class="btn btn-edit"><i class="bi bi-pencil-square"></i> Edit</button> <button
+                                    class="btn btn-hapus"><i class="bi bi-trash-fill"></i> Hapus</button></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div id="keluarga" class="page" style="display:none;">
+            <h2>Data Keluarga</h2>
+            <button class="btn btn-tambah"><i class="bi bi-person-lines-fill"></i> Tambah Keluarga</button>
+            
+            <div class="card">
+                <div class="table-responsive">
+                    <table>
+                        <tr>
+                            <th>No KK</th>
+                            <th>Kepala Keluarga</th>
+                            <th>Alamat</th>
+                            <th>Jumlah Anggota</th>
+                            <th>Aksi</th>
+                        </tr>
+                        <tr>
+                            <td>320101050000123</td>
+                            <td>Budi Santoso</td>
+                            <td>Jl. Kenanga No.12</td>
+                            <td>4</td>
+                            <td><button class="btn btn-edit"><i class="bi bi-pencil-square"></i> Edit</button>
+                                <button class="btn btn-hapus"><i class="bi bi-trash-fill"></i> Hapus</button>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div id="surat" class="page" style="display:none;">
+            <h2>Data Surat</h2>
+            <button class="btn btn-tambah"><i class="bi bi-envelope-plus-fill"></i> Tambah Surat</button>
+            
+            <div class="card">
+                <div class="table-responsive">
+                    <table>
+                        <tr>
+                            <th>No</th>
+                            <th>Jenis Surat</th>
+                            <th>Nomor Surat</th>
+                            <th>Tanggal</th>
+                            <th>Penerima/Pengirim</th>
+                            <th>Aksi</th>
+                        </tr>
+                        <tr>
+                            <td>1</td>
+                            <td>Surat Masuk</td>
+                            <td>001/RT/2025</td>
+                            <td>12 Jan 2025</td>
+                            <td>Lurah</td>
+                            <td><button class="btn btn-edit"><i class="bi bi-pencil-square"></i> Edit</button> <button
+                                    class="btn btn-hapus"><i class="bi bi-trash-fill"></i> Hapus</button></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div id="laporan" class="page" style="display:none;">
+            <h2>Laporan Data Warga</h2>
+            <div class="card">
+                <p>Total warga: 120</p>
+                <p>Total keluarga: 35</p>
+                <p>Surat masuk: 15</p>
+                <p>Surat keluar: 9</p>
+                <button class="btn btn-tambah"><i class="bi bi-printer-fill"></i> Cetak Laporan</button>
+            </div>
+        </div>
+
+        <div id="profil" class="page" style="display:none;">
+            <h2>Profil Admin</h2>
+            <div class="card">
+                <p>Nama: Admin RT 03</p>
+                <p>Username: admin_rt03</p>
+                <button class="btn btn-edit"><i class="bi bi-person-fill-gear"></i> Ubah Profil</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showPage(pageId) {
+            const pages = document.querySelectorAll('.page');
+            pages.forEach(page => page.style.display = 'none');
+            document.getElementById(pageId).style.display = 'block';
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            showPage('dashboard');
+        });
+    </script>
+
+    <script src="../bootstrap/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
