@@ -17,36 +17,23 @@
         .sticky-aksi {
             position: sticky;
             right: 0;
-            /* z-index diperlukan agar kolom "Aksi" ada di atas sel lain saat di-scroll */
             z-index: 1; 
         }
 
-        /* Ini adalah "trade-off" agar kolom aksi bisa menutupi
-           konten yang di-scroll di belakangnya.
-           Kita paskan warnanya agar serasi.
-        */
-
-        /* Atur background untuk header-nya */
         th.sticky-aksi {
-            background-color: rgba(255, 255, 255, 0.7); /* Sesuaikan dengan background header tabel Anda */
-            z-index: 3; /* Pastikan header di atas segalanya */
+            background-color: rgba(255, 255, 255, 0.7); 
+            z-index: 3; 
         }
         
-        /* Atur background untuk sel-sel di baris ganjil */
         tr:nth-child(odd) td.sticky-aksi {
-            /* Samakan dengan background kartu */
             background-color: rgba(255, 255, 255, 0.4); 
         }
 
-        /* Atur background untuk sel-sel di baris genap */
         tr:nth-child(even) td.sticky-aksi {
-            /* Samakan dengan background baris genap */
             background-color: rgba(255, 255, 255, 0.3);
         }
 
-        /* Atur background saat baris di-hover */
         tr:hover td.sticky-aksi {
-            /* Samakan dengan background hover */
             background-color: rgba(255, 255, 255, 0.7);
         }
     </style>
