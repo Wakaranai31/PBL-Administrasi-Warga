@@ -1,155 +1,163 @@
-/* Import Font (contoh: Poppins) */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
 
-/* Variabel CSS untuk konsistensi */
 :root {
-    --glass-bg-light: rgba(255, 255, 255, 0.3); /* Lebih terang untuk latar belakang */
-    --glass-bg-card: rgba(255, 255, 255, 0.2);  /* Untuk kartu agar sedikit transparan */
-    --glass-border: rgba(255, 255, 255, 0.5);
-    --text-dark: #1e293b;
-    --text-light: #f8fafc;
-    --primary-color: #2563eb; /* Biru */
-    --secondary-color: #0d9488; /* Teal */
+    /* Warna efek kaca (transparan putih) */
+    --glass-bg-light: rgba(255, 255, 255, 0.3); /* Latar belakang kaca terang */
+    --glass-bg-card: rgba(255, 255, 255, 0.2);  /* Latar belakang kartu kaca */
+    --glass-border: rgba(255, 255, 255, 0.5);   /* Garis tepi kaca (putih setengah transparan) */
+    
+    /* Warna Teks */
+    --text-dark: #1e293b;   /* Hitam kebiruan (untuk teks utama) */
+    --text-light: #f8fafc;  /* Putih tulang (untuk teks di background gelap) */
+    
+    /* Warna Utama Aplikasi */
+    --primary-color: #2563eb;   /* Biru cerah (tombol utama, link, ikon aktif) */
+    --secondary-color: #0d9488; /* Teal/Hijau Tosca (untuk aksen atau sub-judul) */
+    
+    /* Bayangan (Shadow) untuk efek kedalaman */
     --shadow-light: rgba(0, 0, 0, 0.08);
     --shadow-medium: rgba(0, 0, 0, 0.15);
 }
 
-/* Reset dan Pengaturan Dasar */
+/* =========================================
+   3. RESET & DASAR
+   Membersihkan margin bawaan dan mengatur font default.
+   ========================================= */
 * {
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
-    font-family: 'Poppins', sans-serif;
+    box-sizing: border-box; /* Memastikan padding tidak menambah lebar elemen */
+    font-family: 'Poppins', sans-serif; /* Menggunakan font Poppins untuk semuanya */
 }
 
 body {
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
-    background: linear-gradient(135deg, #89d6ff 0%, #ffffff 100%); /* Latar belakang gradasi */
-    color: var(--text-dark);
-    position: relative; /* Untuk posisi shapes */
-    overflow: hidden; /* Mencegah scroll pada body */
+    min-height: 100vh; /* Tinggi minimal seukuran layar penuh */
+    
+    /* Latar belakang gradasi dari biru muda ke putih */
+    background: linear-gradient(135deg, #89d6ff 0%, #ffffff 100%);
+    
+    color: var(--text-dark); /* Warna teks default */
+    position: relative; /* Diperlukan agar background shapes bisa diposisikan absolut */
+    overflow: hidden; /* Mencegah scrollbar muncul jika ada elemen background yang keluar layar */
 }
 
-/* ===== Glass Effect Helper Class ===== */
+/* =========================================
+   4. UTILITY CLASS: GLASS EFFECT
+   Class "Sakti" untuk membuat efek kaca buram (frosted glass).
+   Bisa ditempel di elemen mana saja (navbar, kartu, dll).
+   ========================================= */
 .glass-effect {
-    background: var(--glass-bg-card);
-    backdrop-filter: blur(12px); /* Blur lebih kuat untuk efek kaca */
-    -webkit-backdrop-filter: blur(12px);
-    border-radius: 18px; /* Sedikit lebih membulat */
-    border: 1px solid var(--glass-border);
-    box-shadow: 0 8px 32px var(--shadow-light); /* Shadow lebih lembut */
+    background: var(--glass-bg-card); /* Warna dasar transparan */
+    
+    /* Efek Blur di belakang elemen (Kunci efek kaca) */
+    backdrop-filter: blur(12px); 
+    -webkit-backdrop-filter: blur(12px); /* Dukungan untuk browser Safari/Apple */
+    
+    border-radius: 18px; /* Sudut membulat */
+    border: 1px solid var(--glass-border); /* Garis tepi tipis transparan */
+    box-shadow: 0 8px 32px var(--shadow-light); /* Bayangan lembut agar terlihat melayang */
 }
 
-/* ===== Main Wrapper (untuk Landing Page) ===== */
+/* =========================================
+   5. LAYOUT UTAMA (Wrapper)
+   Membungkus seluruh konten halaman Hero agar rapi di tengah.
+   ========================================= */
 .main-wrapper {
     width: 100%;
-    max-width: 1440px;
-    height: 100vh; /* Mengisi seluruh tinggi viewport */
+    max-width: 1440px; /* Lebar maksimal konten tidak boleh melebihi ini */
+    height: 100vh;     /* Tinggi 100% layar */
     display: flex;
-    flex-direction: column;
-    padding: 0 var(--dashboard-padding); /* Padding horizontal */
+    flex-direction: column; /* Konten disusun atas ke bawah (Navbar -> Hero) */
+    padding: 0 20px;   /* Jarak aman kiri kanan */
 }
 
-/* ===== Navbar Styling ===== */
+/* =========================================
+   6. NAVBAR (Menu Atas)
+   ========================================= */
 .navbar {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-between; /* Logo di kiri, Tombol di kanan */
     align-items: center;
     padding: 15px 30px;
-    margin-top: 20px;
-    flex-shrink: 0; /* Pastikan navbar tidak menyusut */
-    z-index: 100; /* Pastikan di atas elemen lain */
+    margin-top: 20px; /* Jarak dari atas layar */
+    flex-shrink: 0;   /* Mencegah navbar mengecil/gepeng */
+    z-index: 100;     /* Pastikan navbar selalu di atas elemen background */
 }
 
 .navbar-brand {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 10px; /* Jarak antara ikon rumah dan teks */
     font-size: 1.4rem;
     font-weight: 700;
     color: var(--text-dark);
 }
+
 .navbar-brand i {
     font-size: 1.8rem;
-    color: var(--primary-color);
+    color: var(--primary-color); /* Ikon rumah berwarna biru */
 }
 
-.navbar-menu {
-    list-style: none;
-    display: flex;
-    gap: 30px;
-}
-.navbar-menu a {
-    text-decoration: none;
-    color: var(--text-dark);
-    font-weight: 500;
-    transition: color 0.3s ease;
-}
-.navbar-menu a:hover {
-    color: var(--primary-color);
-}
-
+/* Tombol Login di Navbar */
 .navbar-auth .btn-login {
     background: var(--primary-color);
     color: white;
     padding: 10px 20px;
     border-radius: 10px;
-    text-decoration: none;
+    text-decoration: none; /* Hilangkan garis bawah link */
     font-weight: 500;
     display: flex;
     align-items: center;
     gap: 8px;
-    transition: background 0.3s ease;
+    transition: background 0.3s ease; /* Animasi halus saat hover */
 }
+
 .navbar-auth .btn-login:hover {
-    background: #1e52d3;
+    background: #1e52d3; /* Warna biru lebih gelap saat kursor di atasnya */
 }
 
-/* ===== Hero Section Styling ===== */
+/* =========================================
+   7. HERO SECTION (Halaman Depan)
+   Bagian tengah yang berisi Judul Besar dan Statistik.
+   ========================================= */
 .hero-section {
-    flex-grow: 1; /* Biarkan hero section mengisi sisa ruang */
+    flex-grow: 1; /* Mengisi sisa ruang kosong antara Navbar dan bawah layar */
     display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 80px;
-    padding: 50px 0; /* Padding vertikal */
+    align-items: center; /* Konten rata tengah secara vertikal */
+    justify-content: space-between; /* Teks di kiri, Statistik di kanan */
+    gap: 80px; /* Jarak antar kolom */
+    padding: 50px 0 50px 20px;
     position: relative;
-    z-index: 1;
-    padding-left: 20px;
+    z-index: 1; /* Di atas background shapes */
 }
 
+/* --- Kiri: Konten Teks --- */
 .hero-content {
-    flex: 1;
+    flex: 1; /* Mengambil jatah ruang 1 bagian */
     max-width: 600px;
     text-align: left;
 }
 
-.hero-content .tagline {
-    font-size: 1.1rem;
-    font-weight: 500;
-    color: var(--secondary-color);
-    margin-bottom: 10px;
-}
-
 .hero-title {
-    font-size: 4.5rem; /* Ukuran font lebih besar */
+    font-size: 4.5rem; /* Ukuran huruf sangat besar */
     font-weight: 800;
-    line-height: 1.1;
+    line-height: 1.1; /* Jarak antar baris rapat */
     color: var(--text-dark);
     margin-bottom: 20px;
 }
 
 .hero-description {
     font-size: 1.1rem;
-    line-height: 1.6;
+    line-height: 1.6; /* Jarak antar baris renggang agar mudah dibaca */
     color: var(--text-dark);
     margin-bottom: 30px;
     max-width: 450px;
 }
 
+/* Tombol "Pelajari Lebih Lanjut" */
 .hero-cta {
     background: var(--primary-color);
     color: white;
@@ -161,30 +169,33 @@ body {
     display: inline-block;
     transition: background 0.3s ease;
 }
+
 .hero-cta:hover {
     background: #1e52d3;
 }
 
+/* --- Kanan: Statistik --- */
 .hero-stats {
-    flex: 1;
+    flex: 1; /* Mengambil jatah ruang 1 bagian */
     display: flex;
-    flex-direction: column; /* Kartu disusun vertikal */
+    flex-direction: column; /* Kartu disusun vertikal (atas bawah) */
     gap: 25px;
-    align-items: flex-end; /* Sejajarkan ke kanan */
+    align-items: flex-start; /* Rata kiri */
     max-width: 400px;
-    align-items:flex-start; /* Sejajarkan ke kiri */
 }
 
+/* Kartu Angka Statistik */
 .stat-card {
-    width: 280px; /* Ukuran kartu */
+    width: 280px;
     padding: 25px 30px;
     text-align: center;
-    /* Efek kaca sudah di class .glass-effect */
+    /* Efek kaca diambil dari .glass-effect */
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
+
 .stat-card:hover {
-    transform: translateY(-5px); /* Efek melayang */
-    box-shadow: 0 12px 40px var(--shadow-medium);
+    transform: translateY(-5px); /* Kartu naik sedikit saat di-hover */
+    box-shadow: 0 12px 40px var(--shadow-medium); /* Bayangan makin besar */
 }
 
 .stat-card .stat-number {
@@ -200,48 +211,50 @@ body {
     font-weight: 500;
 }
 
-
-/* ===== Background Shapes for Liquid Glass Effect ===== */
+/* =========================================
+   8. BACKGROUND SHAPES (Hiasan Latar)
+   Bola-bola warna yang blur di belakang konten.
+   ========================================= */
 .bg-shape {
-    position: absolute;
-    border-radius: 20%; /* Bentuk bulat */
-    background: rgba(255, 255, 255, 0.2); /* Warna transparan */
-    filter: blur(80px); /* Efek blur */
-    z-index: 0; /* Di belakang konten */
+    position: absolute; /* Bebas diposisikan di mana saja */
+    border-radius: 50%; /* Membuat jadi bulat sempurna */
+    filter: blur(80px); /* Membuat blur/kabur yang kuat */
+    z-index: 0; /* Paling belakang (di bawah konten) */
 }
 
+/* Bola Biru Muda */
 .shape-1 {
     width: 300px;
     height: 300px;
     top: 15%;
     left: 8%;
-    transform: rotate(45deg);
-    background: rgba(168, 224, 255, 0.4); /* Biru muda */
+    background: rgba(168, 224, 255, 0.6);
 }
 
+/* Bola Merah Muda */
 .shape-2 {
     width: 400px;
     height: 400px;
     bottom: 10%;
     right: 5%;
-    transform: rotate(-30deg);
-    background: rgba(255, 179, 179, 0.4); /* Merah muda */
+    background: rgba(255, 179, 179, 0.5);
 }
 
-
-/* ===== Login Page Styling ===== */
+/* =========================================
+   9. HALAMAN LOGIN (Khusus login.html)
+   ========================================= */
 .login-container {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+    justify-content: center; /* Posisi horizontal tengah */
+    align-items: center;     /* Posisi vertikal tengah */
+    height: 100vh;           /* Full layar */
     width: 100%;
     padding: 20px;
 }
 
 .login-card {
     width: 100%;
-    max-width: 450px; /* Lebar maksimum kartu login */
+    max-width: 450px; /* Lebar maksimal kartu login */
     padding: 40px;
     text-align: center;
 }
@@ -249,56 +262,52 @@ body {
 .login-header {
     margin-bottom: 30px;
 }
+
 .login-header i {
     font-size: 3.5rem;
     color: var(--primary-color);
     margin-bottom: 15px;
 }
+
 .login-header h2 {
     font-size: 2rem;
     color: var(--text-dark);
     margin-bottom: 10px;
 }
-.login-header p {
-    color: var(--text-dark);
-    font-size: 0.95rem;
-}
 
-.login-form {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-}
-
+/* Style Input Form */
 .input-group {
     text-align: left;
+    margin-bottom: 20px;
 }
+
 .input-group label {
     display: block;
     margin-bottom: 8px;
     font-weight: 500;
     color: var(--text-dark);
 }
+
 .input-group input {
     width: 100%;
     padding: 12px 15px;
-    border: 1px solid rgba(255, 255, 255, 0.7); /* Border lebih jelas */
+    border: 1px solid rgba(255, 255, 255, 0.7); /* Border agak transparan */
     border-radius: 10px;
-    background: rgba(255, 255, 255, 0.4); /* Background input lebih transparan */
+    background: rgba(255, 255, 255, 0.4); /* Input juga semi-transparan */
     color: var(--text-dark);
     font-size: 1rem;
     transition: all 0.3s ease;
 }
-.input-group input::placeholder {
-    color: rgba(0, 0, 0, 0.5);
-}
+
+/* Efek saat input diklik/dipilih */
 .input-group input:focus {
     outline: none;
-    border-color: var(--primary-color);
-    background: rgba(255, 255, 255, 0.6);
-    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+    border-color: var(--primary-color); /* Border jadi biru */
+    background: rgba(255, 255, 255, 0.8); /* Background jadi lebih putih */
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2); /* Ada glow biru tipis */
 }
 
+/* Tombol Login Full Width */
 .btn-block {
     width: 100%;
     padding: 12px;
@@ -309,108 +318,78 @@ body {
     border: none;
     border-radius: 10px;
     cursor: pointer;
-    transition: background 0.3s ease, box-shadow 0.3s ease;
+    transition: background 0.3s ease;
 }
+
 .btn-block:hover {
     background: #1e52d3;
-    box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
 }
 
 .login-footer {
     margin-top: 25px;
     font-size: 0.9rem;
 }
+
 .login-footer a {
     color: var(--primary-color);
     text-decoration: none;
-    transition: color 0.3s ease;
 }
+
 .login-footer a:hover {
     text-decoration: underline;
 }
 
-/* Media Queries untuk Responsivitas */
+/* =========================================
+   10. RESPONSIVE DESIGN (Tampilan HP/Tablet)
+   Mengubah layout saat layar mengecil di bawah 992px.
+   ========================================= */
 @media (max-width: 992px) {
+    /* Navbar jadi vertikal */
     .navbar {
         flex-direction: column;
         gap: 15px;
         text-align: center;
         padding: 15px;
     }
-    .navbar-menu {
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 15px;
-    }
-    .navbar-auth {
-        margin-top: 10px;
-    }
-
+    
+    /* Hero section jadi satu kolom (teks di atas, gambar di bawah) */
     .hero-section {
         flex-direction: column;
         text-align: center;
         gap: 40px;
         padding: 30px 0;
     }
+    
     .hero-content {
         max-width: 100%;
     }
+    
     .hero-title {
-        font-size: 3.5rem;
+        font-size: 3.5rem; /* Font judul mengecil sedikit */
     }
-    .hero-description {
-        max-width: 100%;
-        font-size: 1rem;
-    }
+    
     .hero-stats {
-        align-items: center;
+        align-items: center; /* Kartu statistik jadi di tengah */
         max-width: 100%;
     }
+    
     .stat-card {
         width: 250px;
     }
-
-    .shape-1, .shape-2 {
-        filter: blur(60px); /* Kurangi blur pada layar kecil */
-        width: 200px;
-        height: 200px;
-    }
 }
 
+/* Tampilan HP Kecil (di bawah 576px) */
 @media (max-width: 576px) {
-    .navbar-brand {
-        font-size: 1.2rem;
-    }
-    .navbar-brand i {
-        font-size: 1.5rem;
-    }
-    .navbar-menu {
-        font-size: 0.9rem;
-    }
-    .navbar-auth .btn-login {
-        padding: 8px 15px;
-        font-size: 0.9rem;
-    }
-
     .hero-title {
-        font-size: 2.5rem;
+        font-size: 2.5rem; /* Font judul makin kecil agar muat */
     }
-    .hero-description {
-        font-size: 0.9rem;
-    }
-    .hero-cta {
-        padding: 12px 25px;
-        font-size: 1rem;
-    }
+    
     .stat-card {
-        width: 100%; /* Kartu statistik mengisi lebar penuh */
-        max-width: 280px; /* Batasi agar tidak terlalu lebar di mobile */
+        width: 100%; /* Kartu memenuhi lebar layar HP */
+        max-width: 280px;
     }
-
+    
     .login-card {
-        padding: 30px 20px;
-    }
-    .login-header h2 {
-        font-size: 1.7rem;
+        padding: 30px 20px; /* Padding kartu login dikurangi */
     }
 }
