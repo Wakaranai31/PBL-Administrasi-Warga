@@ -1,13 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
-
-/* 2. VARIABLES (Warna & Tema) */
 :root {
-    --glass-bg-card: rgba(255, 0, 0, 0.2)
-    --glass-border: rgba(255, 255, 255, 0.5);
+    --glass-bg-card: rgba(255, 255, 255, 0.2);
+    --glass-border: rgba(255, 255, 255, 0.4);
     
     --text-dark: #1e293b;
     --primary-color: #2563eb;   /* Biru Utama */
-    --secondary-color: #0d9488; /* Aksen Teal */
+    --secondary-color: #00ffea; /* Aksen Teal */
     
     --shadow-light: rgba(0, 0, 0, 0.08);
     --shadow-medium: rgba(0, 0, 0, 0.15);
@@ -26,31 +24,25 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    /* Latar belakang gradasi biru muda */
-    background: linear-gradient(135deg, #89d6ff 0%, #ffffff 100%);
+    background: linear-gradient(-30deg, #89d6ff 30%, #ececec 100%);
     color: var(--text-dark);
-    position: relative;
-    overflow: hidden;
 }
-
-/* 4. UTILITY: GLASS EFFECT (Efek Kaca) */
 .glass-effect {
     background: var(--glass-bg-card);
     backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border-radius: 18px;
-    border: 1px solid var(--glass-border);
-    box-shadow: 0 8px 32px var(--shadow-light);
+    border-radius: 15px;
+    border: 0.5px dotted var(--glass-border);
+    box-shadow: 0 8px 32px var(--shadow-light); 
 }
 
-/* 5. WRAPPER UTAMA */
+/* WRAPPER UTAMA */
 .main-wrapper {
     width: 100%;
     max-width: 1440px;
     height: 100vh;
     display: flex;
     flex-direction: column;
-    padding: 0 20px;
+    padding: 0 5px;
 }
 
 /* 6. NAVBAR */
@@ -181,71 +173,7 @@ body {
     font-weight: 500;
 }
 
-/* 8. BACKGROUND SHAPES (HIASAN) */
-.bg-shape {
-    position: absolute;
-    border-radius: 50%;
-    filter: blur(80px);
-    z-index: 0;
-}
-
-.shape-1 {
-    width: 300px;
-    height: 300px;
-    top: 15%;
-    left: 8%;
-    background: rgba(168, 224, 255, 0.6);
-}
-
-.shape-2 {
-    width: 400px;
-    height: 400px;
-    bottom: 10%;
-    right: 5%;
-    background: rgba(255, 179, 179, 0.5);
-}
-
-/* 9. RESPONSIVE (MEDIA QUERIES) */
-@media (max-width: 992px) {
-    .navbar {
-        flex-direction: column;
-        gap: 15px;
-        text-align: center;
-        padding: 15px;
-    }
-    
-    .hero-section {
-        flex-direction: column;
-        text-align: center;
-        gap: 40px;
-        padding: 30px 0;
-    }
-    
-    .hero-content {
-        max-width: 100%;
-    }
-    
-    .hero-title {
-        font-size: 3.5rem;
-    }
-    
-    .hero-stats {
-        align-items: center;
-        max-width: 100%;
-    }
-    
-    .stat-card {
-        width: 250px;
-    }
-}
-
-@media (max-width: 576px) {
-    .hero-title {
-        font-size: 2.5rem;
-    }
-    
-    .stat-card {
-        width: 100%;
-        max-width: 280px;
-    }
+.kaki {
+    backdrop-filter: blur(12px);
+    box-shadow: 0px -80px 10px -60px var(--shadow-medium) inset;
 }
