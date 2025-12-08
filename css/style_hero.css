@@ -1,0 +1,179 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+:root {
+    --glass-bg-card: rgba(255, 255, 255, 0.2);
+    --glass-border: rgba(255, 255, 255, 0.4);
+    
+    --text-dark: #1e293b;
+    --primary-color: #2563eb;   /* Biru Utama */
+    --secondary-color: #00ffea; /* Aksen Teal */
+    
+    --shadow-light: rgba(0, 0, 0, 0.08);
+    --shadow-medium: rgba(0, 0, 0, 0.15);
+}
+
+/* 3. RESET & BODY */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: linear-gradient(-30deg, #89d6ff 30%, #ececec 100%);
+    color: var(--text-dark);
+}
+.glass-effect {
+    background: var(--glass-bg-card);
+    backdrop-filter: blur(12px);
+    border-radius: 15px;
+    border: 0.5px dotted var(--glass-border);
+    box-shadow: 0 8px 32px var(--shadow-light); 
+}
+
+/* WRAPPER UTAMA */
+.main-wrapper {
+    width: 100%;
+    max-width: 1440px;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    padding: 0 5px;
+}
+
+/* 6. NAVBAR */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 30px;
+    margin-top: 20px;
+    flex-shrink: 0;
+    z-index: 100;
+}
+
+.navbar-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--text-dark);
+}
+
+.navbar-brand i {
+    font-size: 1.8rem;
+    color: var(--primary-color);
+}
+
+.navbar-auth .btn-login {
+    background: var(--primary-color);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: background 0.3s ease;
+}
+
+.navbar-auth .btn-login:hover {
+    background: #1e52d3;
+}
+
+/* 7. HERO SECTION (KONTEN TENGAH) */
+.hero-section {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 80px;
+    padding: 50px 0 50px 20px;
+    position: relative;
+    z-index: 1;
+}
+
+/* --- Kiri: Teks --- */
+.hero-content {
+    flex: 1;
+    max-width: 600px;
+    text-align: left;
+}
+
+.hero-title {
+    font-size: 4.5rem;
+    font-weight: 800;
+    line-height: 1.1;
+    color: var(--text-dark);
+    margin-bottom: 20px;
+}
+
+.hero-description {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: var(--text-dark);
+    margin-bottom: 30px;
+    max-width: 450px;
+}
+
+.hero-cta {
+    background: var(--primary-color);
+    color: white;
+    padding: 15px 30px;
+    border-radius: 12px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1.1rem;
+    display: inline-block;
+    transition: background 0.3s ease;
+}
+
+.hero-cta:hover {
+    background: #1e52d3;
+}
+
+/* --- Kanan: Statistik --- */
+.hero-stats {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    align-items: flex-start;
+    max-width: 400px;
+}
+
+.stat-card {
+    width: 280px;
+    padding: 25px 30px;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 40px var(--shadow-medium);
+}
+
+.stat-card .stat-number {
+    font-size: 3rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin-bottom: 5px;
+}
+
+.stat-card .stat-label {
+    font-size: 1.1rem;
+    color: var(--text-dark);
+    font-weight: 500;
+}
+
+.kaki {
+    backdrop-filter: blur(12px);
+    box-shadow: 0px -80px 10px -60px var(--shadow-medium) inset;
+}
