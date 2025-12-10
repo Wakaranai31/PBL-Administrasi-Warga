@@ -43,3 +43,17 @@ CREATE TABLE layanan_administrasi (
   FOREIGN KEY (id_warga) REFERENCES warga(id_warga),
   FOREIGN KEY (disetujui_oleh) REFERENCES admin(id_admin)
 );
+
+CREATE TABLE berkas (
+    id_berkas INT(3) NOT NULL AUTO_INCREMENT,
+    kartu_keluarga BLOB NOT NULL,
+    ktp BLOB NOT NULL,
+    PRIMARY KEY (id_berkas)
+);
+
+CREATE TABLE keluarga (
+    id_keluarga INT(3) NOT NULL,
+    kepala_keluarga INT(3) NOT NULL,
+    no_kk INT(18) NOT NULL,
+    PRIMARY KEY (id_keluarga)
+);
