@@ -120,8 +120,7 @@ table {
     margin-top: 15px;
 }
 
-th,
-td {
+th,td {
     text-align: left;
     padding: 12px 10px;
     border-bottom: 1px solid #eee;
@@ -193,35 +192,26 @@ tr:hover {
     font-size: 24px;
 }
 
-@media (max-width: 768px) {
-    header {
-        padding: 15px 20px;
-    }
 
-    .sidebar {
-        width: 100%;
-        height: auto;
-        position: relative;
-        padding-top: 10px;
-        border-right: none;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.5);
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-    }
+.sticky-aksi {
+    position: sticky;
+    right: 0;
+    z-index: 1;
+}
 
-    .sidebar a {
-        display: inline-flex;
-        padding: 10px 15px;
-        margin: 5px;
-        border-radius: 8px;
-    }
+th.sticky-aksi {
+    background-color: rgb(244, 250, 253); 
+    z-index: 3; 
+}
 
-    .content {
-        margin-left: 0;
-        padding: 20px;
-        padding-top: 20px;
-    }
+tr:nth-child(odd) td.sticky-aksi {
+    background-color: rgb(244, 250, 253); 
+}
 
-    .dashboard-grid {
-        grid-template-columns: 1fr;
-    }
+tr:nth-child(even) td.sticky-aksi {
+    background-color: rgb(244, 250, 253); 
+}
+
+tr:hover td.sticky-aksi {
+    background-color: rgb(244, 250, 253);
 }
