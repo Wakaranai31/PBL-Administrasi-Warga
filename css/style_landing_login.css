@@ -1,0 +1,416 @@
+/* Import Font (contoh: Poppins) */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
+/* Variabel CSS untuk konsistensi */
+:root {
+    --glass-bg-light: rgba(255, 255, 255, 0.3); /* Lebih terang untuk latar belakang */
+    --glass-bg-card: rgba(255, 255, 255, 0.2);  /* Untuk kartu agar sedikit transparan */
+    --glass-border: rgba(255, 255, 255, 0.5);
+    --text-dark: #1e293b;
+    --text-light: #f8fafc;
+    --primary-color: #2563eb; /* Biru */
+    --secondary-color: #0d9488; /* Teal */
+    --shadow-light: rgba(0, 0, 0, 0.08);
+    --shadow-medium: rgba(0, 0, 0, 0.15);
+}
+
+/* Reset dan Pengaturan Dasar */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #89d6ff 0%, #ffffff 100%); /* Latar belakang gradasi */
+    color: var(--text-dark);
+    position: relative; /* Untuk posisi shapes */
+    overflow: hidden; /* Mencegah scroll pada body */
+}
+
+/* ===== Glass Effect Helper Class ===== */
+.glass-effect {
+    background: var(--glass-bg-card);
+    backdrop-filter: blur(12px); /* Blur lebih kuat untuk efek kaca */
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: 18px; /* Sedikit lebih membulat */
+    border: 1px solid var(--glass-border);
+    box-shadow: 0 8px 32px var(--shadow-light); /* Shadow lebih lembut */
+}
+
+/* ===== Main Wrapper (untuk Landing Page) ===== */
+.main-wrapper {
+    width: 100%;
+    max-width: 1440px;
+    height: 100vh; /* Mengisi seluruh tinggi viewport */
+    display: flex;
+    flex-direction: column;
+    padding: 0 var(--dashboard-padding); /* Padding horizontal */
+}
+
+/* ===== Navbar Styling ===== */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 30px;
+    margin-top: 20px;
+    flex-shrink: 0; /* Pastikan navbar tidak menyusut */
+    z-index: 100; /* Pastikan di atas elemen lain */
+}
+
+.navbar-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--text-dark);
+}
+.navbar-brand i {
+    font-size: 1.8rem;
+    color: var(--primary-color);
+}
+
+.navbar-menu {
+    list-style: none;
+    display: flex;
+    gap: 30px;
+}
+.navbar-menu a {
+    text-decoration: none;
+    color: var(--text-dark);
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+.navbar-menu a:hover {
+    color: var(--primary-color);
+}
+
+.navbar-auth .btn-login {
+    background: var(--primary-color);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: background 0.3s ease;
+}
+.navbar-auth .btn-login:hover {
+    background: #1e52d3;
+}
+
+/* ===== Hero Section Styling ===== */
+.hero-section {
+    flex-grow: 1; /* Biarkan hero section mengisi sisa ruang */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 80px;
+    padding: 50px 0; /* Padding vertikal */
+    position: relative;
+    z-index: 1;
+    padding-left: 20px;
+}
+
+.hero-content {
+    flex: 1;
+    max-width: 600px;
+    text-align: left;
+}
+
+.hero-content .tagline {
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: var(--secondary-color);
+    margin-bottom: 10px;
+}
+
+.hero-title {
+    font-size: 4.5rem; /* Ukuran font lebih besar */
+    font-weight: 800;
+    line-height: 1.1;
+    color: var(--text-dark);
+    margin-bottom: 20px;
+}
+
+.hero-description {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: var(--text-dark);
+    margin-bottom: 30px;
+    max-width: 450px;
+}
+
+.hero-cta {
+    background: var(--primary-color);
+    color: white;
+    padding: 15px 30px;
+    border-radius: 12px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1.1rem;
+    display: inline-block;
+    transition: background 0.3s ease;
+}
+.hero-cta:hover {
+    background: #1e52d3;
+}
+
+.hero-stats {
+    flex: 1;
+    display: flex;
+    flex-direction: column; /* Kartu disusun vertikal */
+    gap: 25px;
+    align-items: flex-end; /* Sejajarkan ke kanan */
+    max-width: 400px;
+    align-items:flex-start; /* Sejajarkan ke kiri */
+}
+
+.stat-card {
+    width: 280px; /* Ukuran kartu */
+    padding: 25px 30px;
+    text-align: center;
+    /* Efek kaca sudah di class .glass-effect */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.stat-card:hover {
+    transform: translateY(-5px); /* Efek melayang */
+    box-shadow: 0 12px 40px var(--shadow-medium);
+}
+
+.stat-card .stat-number {
+    font-size: 3rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin-bottom: 5px;
+}
+
+.stat-card .stat-label {
+    font-size: 1.1rem;
+    color: var(--text-dark);
+    font-weight: 500;
+}
+
+
+/* ===== Background Shapes for Liquid Glass Effect ===== */
+.bg-shape {
+    position: absolute;
+    border-radius: 20%; /* Bentuk bulat */
+    background: rgba(255, 255, 255, 0.2); /* Warna transparan */
+    filter: blur(80px); /* Efek blur */
+    z-index: 0; /* Di belakang konten */
+}
+
+.shape-1 {
+    width: 300px;
+    height: 300px;
+    top: 15%;
+    left: 8%;
+    transform: rotate(45deg);
+    background: rgba(168, 224, 255, 0.4); /* Biru muda */
+}
+
+.shape-2 {
+    width: 400px;
+    height: 400px;
+    bottom: 10%;
+    right: 5%;
+    transform: rotate(-30deg);
+    background: rgba(255, 179, 179, 0.4); /* Merah muda */
+}
+
+
+/* ===== Login Page Styling ===== */
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100%;
+    padding: 20px;
+}
+
+.login-card {
+    width: 100%;
+    max-width: 450px; /* Lebar maksimum kartu login */
+    padding: 40px;
+    text-align: center;
+}
+
+.login-header {
+    margin-bottom: 30px;
+}
+.login-header i {
+    font-size: 3.5rem;
+    color: var(--primary-color);
+    margin-bottom: 15px;
+}
+.login-header h2 {
+    font-size: 2rem;
+    color: var(--text-dark);
+    margin-bottom: 10px;
+}
+.login-header p {
+    color: var(--text-dark);
+    font-size: 0.95rem;
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.input-group {
+    text-align: left;
+}
+.input-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: var(--text-dark);
+}
+.input-group input {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid rgba(255, 255, 255, 0.7); /* Border lebih jelas */
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.4); /* Background input lebih transparan */
+    color: var(--text-dark);
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+.input-group input::placeholder {
+    color: rgba(0, 0, 0, 0.5);
+}
+.input-group input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    background: rgba(255, 255, 255, 0.6);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+}
+
+.btn-block {
+    width: 100%;
+    padding: 12px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+.btn-block:hover {
+    background: #1e52d3;
+    box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
+}
+
+.login-footer {
+    margin-top: 25px;
+    font-size: 0.9rem;
+}
+.login-footer a {
+    color: var(--primary-color);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+.login-footer a:hover {
+    text-decoration: underline;
+}
+
+/* Media Queries untuk Responsivitas */
+@media (max-width: 992px) {
+    .navbar {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+        padding: 15px;
+    }
+    .navbar-menu {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 15px;
+    }
+    .navbar-auth {
+        margin-top: 10px;
+    }
+
+    .hero-section {
+        flex-direction: column;
+        text-align: center;
+        gap: 40px;
+        padding: 30px 0;
+    }
+    .hero-content {
+        max-width: 100%;
+    }
+    .hero-title {
+        font-size: 3.5rem;
+    }
+    .hero-description {
+        max-width: 100%;
+        font-size: 1rem;
+    }
+    .hero-stats {
+        align-items: center;
+        max-width: 100%;
+    }
+    .stat-card {
+        width: 250px;
+    }
+
+    .shape-1, .shape-2 {
+        filter: blur(60px); /* Kurangi blur pada layar kecil */
+        width: 200px;
+        height: 200px;
+    }
+}
+
+@media (max-width: 576px) {
+    .navbar-brand {
+        font-size: 1.2rem;
+    }
+    .navbar-brand i {
+        font-size: 1.5rem;
+    }
+    .navbar-menu {
+        font-size: 0.9rem;
+    }
+    .navbar-auth .btn-login {
+        padding: 8px 15px;
+        font-size: 0.9rem;
+    }
+
+    .hero-title {
+        font-size: 2.5rem;
+    }
+    .hero-description {
+        font-size: 0.9rem;
+    }
+    .hero-cta {
+        padding: 12px 25px;
+        font-size: 1rem;
+    }
+    .stat-card {
+        width: 100%; /* Kartu statistik mengisi lebar penuh */
+        max-width: 280px; /* Batasi agar tidak terlalu lebar di mobile */
+    }
+
+    .login-card {
+        padding: 30px 20px;
+    }
+    .login-header h2 {
+        font-size: 1.7rem;
+    }
+}
