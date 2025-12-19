@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="id">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,7 +14,10 @@
     <header>
         <h1><i class="bi bi-house-door-fill"></i> Portal Warga RT 03</h1>
         <div class="header-right">
-            <span>Halo, <b>Andi Setiawan</b></span>
-            <a href="login.html" class="btn btn-hapus"><i class="bi bi-box-arrow-right"></i> Logout</a>
+            <span>Halo, <b><?php echo isset($_SESSION['nama']) ? $_SESSION['nama'] : $_SESSION['nik']; ?></b></span>
+            
+            <a href="../logout.php" class="btn btn-hapus" onclick="return confirm('Yakin ingin keluar?')">
+                <i class="bi bi-box-arrow-right"></i> Logout
+            </a>
         </div>
     </header>

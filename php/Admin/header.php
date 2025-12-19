@@ -1,10 +1,9 @@
 <!DOCTYPE html>
 <html lang="id">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aplikasi Administrasi Warga RT/RW</title>
+    <title>Admin WAW</title>
     <link rel="stylesheet" href="../../bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="../../css/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -13,9 +12,12 @@
 
 <body>
     <header>
-        <h1><i class="bi bi-house-door-fill"></i> Admin RT/RW - Data Warga</h1>
+        <h1><i class="bi bi-house-door-fill"></i> Admin RT/RW</h1>
         <div class="header-right">
-            <span>Halo, <b>Admin</b></span>
-            <button class="btn btn-hapus" onclick="openLogout()"><i class="bi bi-box-arrow-right"></i> Logout</button>
+            <span>Halo, <b><?php echo isset($_SESSION['nama']) ? $_SESSION['nama'] : 'Admin'; ?></b></span>
+            
+            <a href="../logout.php" class="btn btn-danger btn-sm" onclick="return confirm('Yakin ingin keluar?')">
+                <i class="bi bi-box-arrow-right"></i> Logout
+            </a>
         </div>
     </header>
