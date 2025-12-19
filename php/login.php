@@ -51,13 +51,18 @@ if (isset($_POST['login'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
     <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../fontawesome/all.min.css">
+    <link rel="stylesheet" href="../fontawesome/css/all.min.css">
     <link rel="stylesheet" href="../css/style_login.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 
 <body>
     <div class="login-container">
+        <div class="button-back glass-effect">
+            <a href="hero.php">
+                <i class="fa-solid fa-arrow-left"></i> <span><</span>
+            </a>
+        </div>
         <div class="login-card glass-effect">
             <div class="login-header">
                 <i class="fa-solid fa-user"></i>

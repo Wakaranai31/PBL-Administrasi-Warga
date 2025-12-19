@@ -21,7 +21,7 @@
                 <span>Administrasi Warga</span>
             </div>
             <div class="navbar-auth">
-                <a href="login.html" class="btn btn-login"><i class="fa-solid fa-user"></i> Login</a>
+                <a href="login.php" class="btn btn-login"><i class="fa-solid fa-user"></i> Login</a>
             </div>
         </nav>
 

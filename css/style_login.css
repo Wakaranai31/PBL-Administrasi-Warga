@@ -35,7 +35,23 @@ body {
     border: 1px solid var(--glass-border); 
     box-shadow: 0 8px 32px var(--shadow-light); 
 }
+
+.button-back {
+    z-index: 0;
+    width: 5%;
+    max-width: 450px;
+    min-height: 57%;
+    padding: 10px 15px;
+    background: var(--glass-bg-card);
+    border-radius: 10px;
+    border: 1px solid var(--glass-border);
+    box-shadow: 0 4px 16px var(--shadow-light);
+    transition: all 0.3s ease;
+    opacity: 0.6;
+}
+
 .login-container {
+    z-index: 1;
     display: flex;
     justify-content: center; 
     align-items: center;    
