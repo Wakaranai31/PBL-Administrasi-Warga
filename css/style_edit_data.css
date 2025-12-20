@@ -1,7 +1,6 @@
-/* Area konten utama */
 .content {
-    margin-left: 240px;          /* lebar sidebar */
-    padding: 160px 40px 60px;    /* ⬅️ ini yang bikin turun jauh */
+    margin-left: 240px;         
+    padding: 160px 40px 60px;    
     display: flex;
     justify-content: center;
     align-items: flex-start;
@@ -9,7 +8,6 @@
     box-sizing: border-box;
 }
 
-/* Card / halaman form */
 .page {
     background: #ffffff;
     padding: 35px 40px;
@@ -19,21 +17,18 @@
     box-shadow: 0 10px 30px rgba(0,0,0,0.08);
 }
 
-/* Judul */
 .page h2 {
     margin-bottom: 35px;
     font-size: 24px;
     color: #2c3e50;
 }
 
-/* Grid form */
 .form-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 24px;
 }
 
-/* Form group */
 .form-group label {
     display: block;
     margin-bottom: 8px;
@@ -57,7 +52,6 @@
     outline: none;
 }
 
-/* Tombol */
 .btn-group {
     grid-column: span 2;
     display: flex;
@@ -94,3 +88,4 @@
 .btn-secondary:hover {
     background: #dfe6e9;
 }
+
