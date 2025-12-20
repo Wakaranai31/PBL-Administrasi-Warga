@@ -2,17 +2,13 @@
 include "header.php";
 include "sidebar.php";
 
-// Ambil ID dari URL
 $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 
-// Ambil data keluarga
 $data = [];
 if ($id > 0) {
     $query = mysqli_query($koneksi, "SELECT * FROM keluarga WHERE id=$id");
     $data = mysqli_fetch_assoc($query);
 }
-
-// Proses update data
 if (isset($_POST['update'])) {
     $nama = $_POST['nama'];
     $hubungan = $_POST['hubungan'];
@@ -139,3 +135,4 @@ if (isset($_POST['update'])) {
         </form>
     </div>
 </div>
+
