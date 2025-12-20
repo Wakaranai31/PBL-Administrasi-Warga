@@ -6,7 +6,7 @@ include '../koneksi.php';
 // 1. CEK KEAMANAN (SATPAM)
 // Kalau belum login atau bukan warga, tendang ke login
 if (!isset($_SESSION['nik']) || $_SESSION['role'] != 'warga') {
-    header("Location: ../../login.php");
+    header("Location: ../login.php");
     exit();
 }
 

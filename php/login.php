@@ -58,11 +58,6 @@ if (isset($_POST['login'])) {
 
 <body>
     <div class="login-container">
-        <div class="button-back glass-effect">
-            <a href="hero.php">
-                <i class="fa-solid fa-arrow-left"></i> <span><</span>
-            </a>
-        </div>
         <div class="login-card glass-effect">
             <div class="login-header">
                 <i class="fa-solid fa-user"></i>
