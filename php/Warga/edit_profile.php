@@ -2,18 +2,15 @@
 session_start();
 include 'koneksi.php';
 
-// Cek apakah user sudah login
 if (!isset($_SESSION['username'])) {
     header("Location: login.php");
     exit();
 }
 
-// Ambil data user dari database
 $username = $_SESSION['username'];
 $query = mysqli_query($koneksi, "SELECT * FROM user WHERE username='$username'");
 $data = mysqli_fetch_array($query);
 
-// Proses update data
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nama_lengkap = mysqli_real_escape_string($koneksi, $_POST['nama_lengkap']);
     $nik = mysqli_real_escape_string($koneksi, $_POST['nik']);
@@ -176,4 +173,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>
