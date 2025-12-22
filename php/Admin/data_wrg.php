@@ -1,18 +1,54 @@
 <?php
 session_start();
-// [UBAH DISINI] Path koneksi saya perbaiki jadi ../../ sesuai gambar struktur foldermu
+// Pastikan path ini sesuai dengan struktur foldermu (berdasarkan gambar tadi ../koneksi.php sudah benar)
 include '../koneksi.php'; 
 
 if (!isset($_SESSION['nik']) || $_SESSION['role'] != 'admin') {
-    // [UBAH DISINI] Path login juga diperbaiki
     header("Location: ../login.php");
     exit();
 }
 
-// [UBAH DISINI] BAGIAN 1: LOGIKA UPDATE DATA (PHP)
-// Ini menangkap data saat tombol "Simpan Perubahan" ditekan
+// [BARU] BAGIAN 1: LOGIKA TAMBAH DATA
+if (isset($_POST['tambah_warga'])) {
+    $nik            = $_POST['nik'];
+    $nama           = $_POST['nama'];
+    $no_kk          = !empty($_POST['no_kk']) ? $_POST['no_kk'] : NULL; // Kalau kosong di-set NULL biar ga error
+    $tempat_lahir   = $_POST['tempat_lahir'];
+    $tanggal_lahir  = $_POST['tanggal_lahir'];
+    $jenis_kelamin  = $_POST['jenis_kelamin'];
+    $status_hub     = $_POST['status_hub_keluarga'];
+    $pendidikan     = $_POST['pendidikan'];
+    $pekerjaan      = $_POST['pekerjaan'];
+    $no_hp          = $_POST['no_hp'];
+
+    // Password Default adalah NIK (Dienkripsi)
+    $password_default = password_hash($nik, PASSWORD_DEFAULT);
+
+    // Cek dulu apakah NIK sudah ada
+    $cek_nik = mysqli_query($koneksi, "SELECT nik FROM warga WHERE nik = '$nik'");
+    if (mysqli_num_rows($cek_nik) > 0) {
+        echo "<script>alert('Gagal: NIK sudah terdaftar!');</script>";
+    } else {
+        $query_tambah = "INSERT INTO warga (nik, no_kk, nama, password, tempat_lahir, tanggal_lahir, jenis_kelamin, status_hub_keluarga, pendidikan, pekerjaan, no_hp) 
+                         VALUES ('$nik', '$no_kk', '$nama', '$password_default', '$tempat_lahir', '$tanggal_lahir', '$jenis_kelamin', '$status_hub', '$pendidikan', '$pekerjaan', '$no_hp')";
+
+        if (mysqli_query($koneksi, $query_tambah)) {
+            echo "<script>alert('Data Warga Berhasil Ditambahkan!'); window.location='data_wrg.php';</script>";
+        } else {
+            // Menangkap error jika No KK tidak ditemukan di tabel keluarga
+            $error = mysqli_error($koneksi);
+            if (strpos($error, 'foreign key') !== false) {
+                echo "<script>alert('Gagal: Nomor KK tidak ditemukan di Data Keluarga!');</script>";
+            } else {
+                echo "<script>alert('Gagal Tambah: $error');</script>";
+            }
+        }
+    }
+}
+
+// BAGIAN 2: LOGIKA UPDATE DATA
 if (isset($_POST['update_warga'])) {
-    $nik_lama       = $_POST['nik']; // NIK dijadikan kunci pencarian
+    $nik_lama       = $_POST['nik']; 
     $nama           = $_POST['nama'];
     $tempat_lahir   = $_POST['tempat_lahir'];
     $tanggal_lahir  = $_POST['tanggal_lahir'];
@@ -22,7 +58,6 @@ if (isset($_POST['update_warga'])) {
     $pekerjaan      = $_POST['pekerjaan'];
     $no_hp          = $_POST['no_hp'];
 
-    // Query Update ke Database
     $query_update = "UPDATE warga SET 
                      nama = '$nama',
                      tempat_lahir = '$tempat_lahir',
@@ -40,7 +75,6 @@ if (isset($_POST['update_warga'])) {
         echo "<script>alert('Gagal Update: " . mysqli_error($koneksi) . "');</script>";
     }
 }
-// [AKHIR BAGIAN 1]
 
 if (isset($_GET['hapus'])) {
     $nik_hapus = $_GET['hapus'];
@@ -65,8 +99,12 @@ while($row = mysqli_fetch_assoc($result)) {
 <div class="content">
     <div id="warga" class="page">
         <h2>Data Warga</h2>
+        
         <div class="card">
-            <div class="table-responsive">
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalTambah">
+                <i class="bi bi-person-plus-fill"></i> Tambah Warga
+            </button>
+            <div class="table-responsive p-3">
                 <table>
                     <thead> 
                         <tr>
@@ -107,6 +145,86 @@ while($row = mysqli_fetch_assoc($result)) {
                     </tbody>
                 </table>
             </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalTambah" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header text-dark">
+                <h5 class="modal-title">Tambah Data Warga Baru</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="POST">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">NIK (Wajib & Unik)</label>
+                            <input type="text" name="nik" class="form-control" placeholder="Masukkan 16 digit NIK" required>
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">Nomor KK (Wajib Ada di Data Keluarga)</label>
+                            <input type="text" name="no_kk" class="form-control" placeholder="Masukkan No KK">
+                            <small class="text-danger" style="font-size: 0.7rem;">*Jika No KK belum terdaftar di menu Keluarga, kosongkan dulu.</small>
+                        </div>
+
+                        <div class="col-md-12 mb-3">
+                            <label class="form-label fw-bold">Nama Lengkap</label>
+                            <input type="text" name="nama" class="form-control" required>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">Tempat Lahir</label>
+                            <input type="text" name="tempat_lahir" class="form-control">
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">Tanggal Lahir</label>
+                            <input type="date" name="tanggal_lahir" class="form-control">
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">Jenis Kelamin</label>
+                            <select name="jenis_kelamin" class="form-select">
+                                <option value="L">Laki-laki</option>
+                                <option value="P">Perempuan</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">Status Hubungan</label>
+                            <select name="status_hub_keluarga" class="form-select">
+                                <option value="Kepala Keluarga">Kepala Keluarga</option>
+                                <option value="Suami">Suami</option>
+                                <option value="Istri">Istri</option>
+                                <option value="Anak">Anak</option>
+                                <option value="Famili Lain">Famili Lain</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">Pendidikan</label>
+                            <input type="text" name="pendidikan" class="form-control">
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">Pekerjaan</label>
+                            <input type="text" name="pekerjaan" class="form-control">
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">No. HP</label>
+                            <input type="text" name="no_hp" class="form-control">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" name="tambah_warga" class="btn btn-primary">Simpan Data Baru</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
@@ -153,7 +271,7 @@ while($row = mysqli_fetch_assoc($result)) {
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label class="form-label fw-bold">NIK</label>
-                            <input type="text" name="nik" class="form-control" value="<?php echo $row['nik']; ?>">
+                            <input type="text" name="nik" class="form-control" value="<?php echo $row['nik']; ?>" readonly>
                         </div>
                         
                         <div class="col-md-6 mb-3">

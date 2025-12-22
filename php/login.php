@@ -78,7 +78,8 @@ if (isset($_POST['login'])) {
                 <button type="submit" name="login" class="btn btn-primary btn-block">Login</button>
             </form>
             <div class="login-footer">
-                <a href="daftar.php">Daftar</a>
+                <a href="daftar.php">Daftar Akun</a><br>
+                <a href="daftar_kk.php">Daftar Keluarga</a>
             </div>
         </div>
     </div>
