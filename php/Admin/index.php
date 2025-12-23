@@ -52,15 +52,8 @@ $jumlah_surat = $data_surat['total'];
                 <p>Pengajuan Masuk</p>
             </div>
 
-            <div class="stat-card">
-                <h3>0</h3>
-                <p>Surat Keluar</p>
-            </div>
-
         </div>
     </div>
 </div>
 
-<script src="../bootstrap/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+<?php include "footer.php" ?>

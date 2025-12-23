@@ -62,6 +62,4 @@ if (!empty($data_warga['no_kk'])) {
     </div>
 </div>
 
-<script src="../../bootstrap/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+<?php include "footer.php" ?>

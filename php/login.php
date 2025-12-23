@@ -54,13 +54,14 @@ if (isset($_POST['login'])) {
     <link rel="stylesheet" href="../fontawesome/css/all.min.css">
     <link rel="stylesheet" href="../css/style_login.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
 </head>
 
 <body>
     <div class="login-container">
         <div class="login-card glass-effect">
             <div class="login-header">
-                <i class="fa-solid fa-user"></i>
+                <i class="bi bi-person-fill"></i>
                 <h2>Login</h2>
             </div>
             

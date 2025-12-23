@@ -253,3 +253,50 @@ tr:hover td.sticky-aksi {
 .modal-footer {
     border-top: 1px solid rgba(0, 0, 0, 0.2);
 }
+
+/* --- Tambahan untuk Halaman Laporan (Filter & Print) --- */
+
+/* Tanda Tangan (Default Sembunyi) */
+.tanda-tangan {
+    display: none;
+    margin-top: 50px;
+    text-align: right;
+    padding-right: 50px;
+}
+
+/* --- PENGATURAN MODE CETAK (PRINT) --- */
+@media print {
+    /* Sembunyikan elemen yang tidak perlu dicetak */
+    .sidebar, 
+    .filter-card, 
+    .btn-cetak-area, 
+    header { 
+        display: none !important; 
+    }
+
+    /* Atur Konten agar Full Kertas */
+    .content { 
+        margin-left: 0 !important; 
+        padding: 0 !important; 
+        width: 100% !important; 
+    }
+
+    /* Atur Tabel agar Rapi di Kertas */
+    table { 
+        width: 100% !important; 
+        border-collapse: collapse; 
+    }
+    
+    th, td { 
+        border: 1px solid black !important; 
+        padding: 5px; 
+        font-size: 12px; 
+    }
+
+    .tanda-tangan { 
+        display: none; 
+        margin-top: 50px; 
+        text-align: right; 
+        padding-right: 50px; 
+    }
+}

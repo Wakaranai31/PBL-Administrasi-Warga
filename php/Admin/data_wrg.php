@@ -30,7 +30,7 @@ if (isset($_POST['tambah_warga'])) {
         echo "<script>alert('Gagal: NIK sudah terdaftar!');</script>";
     } else {
         $query_tambah = "INSERT INTO warga (nik, no_kk, nama, password, tempat_lahir, tanggal_lahir, jenis_kelamin, status_hub_keluarga, pendidikan, pekerjaan, no_hp) 
-                         VALUES ('$nik', '$no_kk', '$nama', '$password_default', '$tempat_lahir', '$tanggal_lahir', '$jenis_kelamin', '$status_hub', '$pendidikan', '$pekerjaan', '$no_hp')";
+                        VALUES ('$nik', '$no_kk', '$nama', '$password_default', '$tempat_lahir', '$tanggal_lahir', '$jenis_kelamin', '$status_hub', '$pendidikan', '$pekerjaan', '$no_hp')";
 
         if (mysqli_query($koneksi, $query_tambah)) {
             echo "<script>alert('Data Warga Berhasil Ditambahkan!'); window.location='data_wrg.php';</script>";
@@ -59,15 +59,15 @@ if (isset($_POST['update_warga'])) {
     $no_hp          = $_POST['no_hp'];
 
     $query_update = "UPDATE warga SET 
-                     nama = '$nama',
-                     tempat_lahir = '$tempat_lahir',
-                     tanggal_lahir = '$tanggal_lahir',
-                     jenis_kelamin = '$jenis_kelamin',
-                     status_hub_keluarga = '$status_hub',
-                     pendidikan = '$pendidikan',
-                     pekerjaan = '$pekerjaan',
-                     no_hp = '$no_hp'
-                     WHERE nik = '$nik_lama'";
+                    nama = '$nama',
+                    tempat_lahir = '$tempat_lahir',
+                    tanggal_lahir = '$tanggal_lahir',
+                    jenis_kelamin = '$jenis_kelamin',
+                    status_hub_keluarga = '$status_hub',
+                    pendidikan = '$pendidikan',
+                    pekerjaan = '$pekerjaan',
+                    no_hp = '$no_hp'
+                    WHERE nik = '$nik_lama'";
 
     if (mysqli_query($koneksi, $query_update)) {
         echo "<script>alert('Data Berhasil Diperbarui!'); window.location='data_wrg.php';</script>";
@@ -85,8 +85,8 @@ if (isset($_GET['hapus'])) {
 
 $data_warga = [];
 $query = "SELECT warga.*, keluarga.alamat FROM warga 
-          LEFT JOIN keluarga ON warga.no_kk = keluarga.no_kk 
-          ORDER BY warga.nama ASC";
+        LEFT JOIN keluarga ON warga.no_kk = keluarga.no_kk 
+        ORDER BY warga.nama ASC";
 $result = mysqli_query($koneksi, $query);
 while($row = mysqli_fetch_assoc($result)) {
     $data_warga[] = $row;
@@ -128,7 +128,7 @@ while($row = mysqli_fetch_assoc($result)) {
                             <td><?php echo $row['nama']; ?></td>
                             <td><?php echo $row['no_hp']; ?></td>
                             <td class="sticky-aksi text-center">
-                                <button class="btn btn-lihat" data-bs-toggle="modal" data-bs-target="#modalDetail<?php echo $row['nik']; ?>">
+                                <button class="btn btn-lihat btn-warning" data-bs-toggle="modal" data-bs-target="#modalDetail<?php echo $row['nik']; ?>">
                                     <i class="bi bi-eye-fill"></i> Lihat
                                 </button>
                                 
@@ -159,33 +159,37 @@ while($row = mysqli_fetch_assoc($result)) {
             <form method="POST">
                 <div class="modal-body">
                     <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label fw-bold">NIK (Wajib & Unik)</label>
-                            <input type="text" name="nik" class="form-control" placeholder="Masukkan 16 digit NIK" required>
+                        <div class="col-md-4 mb-5">
+                            <label class="form-label fw-bold">NIK</label>
+                            <input type="text" name="nik" class="form-control" required>
                         </div>
                         
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label fw-bold">Nomor KK (Wajib Ada di Data Keluarga)</label>
-                            <input type="text" name="no_kk" class="form-control" placeholder="Masukkan No KK">
-                            <small class="text-danger" style="font-size: 0.7rem;">*Jika No KK belum terdaftar di menu Keluarga, kosongkan dulu.</small>
+                        <div class="col-md-4 mb-5">
+                            <label class="form-label fw-bold">Nomor KK</label>
+                            <input type="text" name="no_kk" class="form-control">
                         </div>
 
-                        <div class="col-md-12 mb-3">
+                        <div class="col-md-4 mb-5">
+                            <label class="form-label fw-bold">Password</label>
+                            <input type="text" name="no_hp" class="form-control">
+                        </div>
+                        
+                        <div class="col-md-4 mb-5">
                             <label class="form-label fw-bold">Nama Lengkap</label>
                             <input type="text" name="nama" class="form-control" required>
                         </div>
 
-                        <div class="col-md-6 mb-3">
+                        <div class="col-md-4 mb-5">
                             <label class="form-label fw-bold">Tempat Lahir</label>
                             <input type="text" name="tempat_lahir" class="form-control">
                         </div>
 
-                        <div class="col-md-6 mb-3">
+                        <div class="col-md-4 mb-5">
                             <label class="form-label fw-bold">Tanggal Lahir</label>
                             <input type="date" name="tanggal_lahir" class="form-control">
                         </div>
 
-                        <div class="col-md-6 mb-3">
+                        <div class="col-md-4 mb-5">
                             <label class="form-label fw-bold">Jenis Kelamin</label>
                             <select name="jenis_kelamin" class="form-select">
                                 <option value="L">Laki-laki</option>
@@ -193,7 +197,7 @@ while($row = mysqli_fetch_assoc($result)) {
                             </select>
                         </div>
 
-                        <div class="col-md-6 mb-3">
+                        <div class="col-md-4 mb-5">
                             <label class="form-label fw-bold">Status Hubungan</label>
                             <select name="status_hub_keluarga" class="form-select">
                                 <option value="Kepala Keluarga">Kepala Keluarga</option>
@@ -204,17 +208,22 @@ while($row = mysqli_fetch_assoc($result)) {
                             </select>
                         </div>
 
-                        <div class="col-md-6 mb-3">
+                        <div class="col-md-4 mb-5">
                             <label class="form-label fw-bold">Pendidikan</label>
                             <input type="text" name="pendidikan" class="form-control">
                         </div>
 
-                        <div class="col-md-6 mb-3">
+                        <div class="col-md-4 mb-5">
                             <label class="form-label fw-bold">Pekerjaan</label>
                             <input type="text" name="pekerjaan" class="form-control">
                         </div>
 
-                        <div class="col-md-6 mb-3">
+                        <div class="col-md-4 mb-5">
+                            <label class="form-label fw-bold">Agama</label>
+                            <input type="text" name="no_hp" class="form-control">
+                        </div>
+
+                        <div class="col-md-4 mb-5">
                             <label class="form-label fw-bold">No. HP</label>
                             <input type="text" name="no_hp" class="form-control">
                         </div>
@@ -240,16 +249,16 @@ while($row = mysqli_fetch_assoc($result)) {
             </div>
             <div class="modal-body">
                 <div class="row">
-                    <div class="col-md-4 mb-5"><label class="fw-bold">NIK:</label><p><?php echo $row['nik']; ?></p></div>
-                    <div class="col-md-4 mb-5"><label class="fw-bold">Nama:</label><p><?php echo $row['nama']; ?></p></div>
-                    <div class="col-md-4 mb-5"><label class="fw-bold">Tempat Lahir:</label><p><?php echo $row['tempat_lahir']; ?></p></div>
-                    <div class="col-md-4 mb-5"><label class="fw-bold">Tanggal Lahir:</label><p><?php echo $row['tanggal_lahir']; ?></p></div>
-                    <div class="col-md-4 mb-5"><label class="fw-bold">Jenis Kelamin:</label><p><?php echo $row['jenis_kelamin'] == 'L' ? 'Laki-laki' : 'Perempuan'; ?></p></div>
-                    <div class="col-md-4 mb-5"><label class="fw-bold">Status Hubungan:</label><p><?php echo $row['status_hub_keluarga']; ?></p></div>
-                    <div class="col-md-4 mb-5"><label class="fw-bold">Alamat:</label><p><?php echo $row['alamat'] ? $row['alamat'] : 'Data KK belum ada'; ?></p></div>
-                    <div class="col-md-4 mb-5"><label class="fw-bold">Pendidikan:</label><p><?php echo $row['pendidikan']; ?></p></div>
-                    <div class="col-md-4 mb-5"><label class="fw-bold">Pekerjaan:</label><p><?php echo $row['pekerjaan']; ?></p></div>
-                    <div class="col-md-4 mb-5"><label class="fw-bold">No. HP:</label><p><?php echo $row['no_hp']; ?></p></div>
+                    <div class="col-md-4 mb-2"><label class="fw-bold">NIK:</label><p><?php echo $row['nik']; ?></p></div>
+                    <div class="col-md-4 mb-2"><label class="fw-bold">Nama:</label><p><?php echo $row['nama']; ?></p></div>
+                    <div class="col-md-4 mb-2"><label class="fw-bold">Tempat Lahir:</label><p><?php echo $row['tempat_lahir']; ?></p></div>
+                    <div class="col-md-4 mb-2"><label class="fw-bold">Tanggal Lahir:</label><p><?php echo $row['tanggal_lahir']; ?></p></div>
+                    <div class="col-md-4 mb-2"><label class="fw-bold">Jenis Kelamin:</label><p><?php echo $row['jenis_kelamin'] == 'L' ? 'Laki-laki' : 'Perempuan'; ?></p></div>
+                    <div class="col-md-4 mb-2"><label class="fw-bold">Status Hubungan:</label><p><?php echo $row['status_hub_keluarga']; ?></p></div>
+                    <div class="col-md-4 mb-2"><label class="fw-bold">Alamat:</label><p><?php echo $row['alamat'] ? $row['alamat'] : 'Data KK belum ada'; ?></p></div>
+                    <div class="col-md-4 mb-2"><label class="fw-bold">Pendidikan:</label><p><?php echo $row['pendidikan']; ?></p></div>
+                    <div class="col-md-4 mb-2"><label class="fw-bold">Pekerjaan:</label><p><?php echo $row['pekerjaan']; ?></p></div>
+                    <div class="col-md-4 mb-2"><label class="fw-bold">No. HP:</label><p><?php echo $row['no_hp']; ?></p></div>
                 </div>
             </div>
             <div class="modal-footer">
@@ -321,6 +330,11 @@ while($row = mysqli_fetch_assoc($result)) {
                             <label class="form-label fw-bold">No. HP</label>
                             <input type="text" name="no_hp" class="form-control" value="<?php echo $row['no_hp']; ?>">
                         </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">No. HP</label>
+                            <input type="text" name="no_hp" class="form-control" value="<?php echo $row['no_hp']; ?>">
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -333,4 +347,4 @@ while($row = mysqli_fetch_assoc($result)) {
 </div>
 <?php endforeach; ?>
 
-<script src="../../bootstrap/js/bootstrap.bundle.min.js"></script>
+<?php include "footer.php" ?>

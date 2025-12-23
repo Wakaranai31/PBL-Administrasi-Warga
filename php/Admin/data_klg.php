@@ -51,13 +51,13 @@ if (isset($_POST['update_kk'])) {
 
     // Update query (Karena ada ON UPDATE CASCADE di database, mengubah No KK aman dan akan merubah data di tabel warga juga)
     $query = "UPDATE keluarga SET 
-              no_kk = '$no_kk_baru',
-              kepala_keluarga = '$kepala',
-              alamat = '$alamat',
-              rt = '$rt',
-              rw = '$rw',
-              kode_pos = '$kode_pos'
-              WHERE no_kk = '$no_kk_lama'";
+            no_kk = '$no_kk_baru',
+            kepala_keluarga = '$kepala',
+            alamat = '$alamat',
+            rt = '$rt',
+            rw = '$rw',
+            kode_pos = '$kode_pos'
+            WHERE no_kk = '$no_kk_lama'";
 
     if (mysqli_query($koneksi, $query)) {
         echo "<script>alert('Data KK Berhasil Diperbarui!'); window.location='data_klg.php';</script>";
@@ -241,4 +241,4 @@ while($row = mysqli_fetch_assoc($result)) {
 </div>
 <?php endforeach; ?>
 
-<script src="../../bootstrap/js/bootstrap.bundle.min.js"></script>
+<?php include "footer.php" ?>

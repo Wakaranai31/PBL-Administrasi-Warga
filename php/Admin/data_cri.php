@@ -46,9 +46,9 @@ if (isset($_GET['keyword'])) {
         <form action="" method="GET">
             <div class="input-group mb-3">
                 <input type="text" name="keyword" class="form-control" 
-                       placeholder="Masukkan NIK atau Nama Warga..." 
-                       value="<?php echo htmlspecialchars($keyword); ?>" 
-                       aria-label="Recipient's username" aria-describedby="button-addon2" required>
+                    placeholder="Masukkan NIK atau Nama Warga..." 
+                    value="<?php echo htmlspecialchars($keyword); ?>" 
+                    aria-label="Recipient's username" aria-describedby="button-addon2" required>
                 
                 <button class="btn btn-primary" type="submit" id="button-addon2">
                     <i class="bi bi-search"></i> Cari
@@ -111,6 +111,4 @@ if (isset($_GET['keyword'])) {
     </div>
 </div>
 
-<script src="../../bootstrap/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+<?php include "footer.php" ?>
