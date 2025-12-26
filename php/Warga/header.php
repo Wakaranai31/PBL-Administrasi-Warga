@@ -31,7 +31,7 @@
                     
                     <div class="d-flex justify-content-center gap-2">
                         <button type="button" class="btn btn-light fw-bold px-3 w-50" data-bs-dismiss="modal">Batal</button>
-                        <button href="../logout.php" class="btn btn-danger fw-bold px-3 w-50">Ya, Keluar</button>
+                        <a href="../logout.php" class="btn btn-danger fw-bold px-3 w-50">Ya, Keluar</a>
                     </div>
                 </div>
             </div>

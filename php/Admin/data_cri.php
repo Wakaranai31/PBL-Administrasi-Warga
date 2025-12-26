@@ -1,10 +1,8 @@
 <?php 
 session_start();
-// Mundur 2 langkah cari koneksi
 include '../koneksi.php'; 
 
-// 1. CEK KEAMANAN (SATPAM)
-// Kalau belum login atau bukan admin, tendang ke login
+// 1. CEK KEAMANAN
 if (!isset($_SESSION['nik']) || $_SESSION['role'] != 'admin') {
     header("Location: ../login.php");
     exit();
@@ -19,14 +17,15 @@ if (isset($_GET['keyword'])) {
     $pencarian_dilakukan = true;
     $keyword = $_GET['keyword'];
     
-    // Bersihkan input biar aman
     $safe_keyword = mysqli_real_escape_string($koneksi, $keyword);
 
-    // Cari di database: Nama MIRIP keyword ATAU NIK MIRIP keyword
-    $query = "SELECT * FROM warga 
-              WHERE nama LIKE '%$safe_keyword%' 
-              OR nik LIKE '%$safe_keyword%' 
-              ORDER BY nama ASC";
+    // Gunakan LEFT JOIN agar bisa mengambil data ALAMAT dari tabel keluarga
+    $query = "SELECT warga.*, keluarga.alamat 
+              FROM warga 
+              LEFT JOIN keluarga ON warga.no_kk = keluarga.no_kk
+              WHERE warga.nama LIKE '%$safe_keyword%' 
+              OR warga.nik LIKE '%$safe_keyword%' 
+              ORDER BY warga.nama ASC";
               
     $result = mysqli_query($koneksi, $query);
 
@@ -48,9 +47,9 @@ if (isset($_GET['keyword'])) {
                 <input type="text" name="keyword" class="form-control" 
                     placeholder="Masukkan NIK atau Nama Warga..." 
                     value="<?php echo htmlspecialchars($keyword); ?>" 
-                    aria-label="Recipient's username" aria-describedby="button-addon2" required>
+                    required>
                 
-                <button class="btn btn-primary" type="submit" id="button-addon2">
+                <button class="btn btn-primary" type="submit">
                     <i class="bi bi-search"></i> Cari
                 </button>
             </div>
@@ -65,27 +64,33 @@ if (isset($_GET['keyword'])) {
 
                 <div class="card p-3 shadow-sm">
                     <div class="table-responsive">
-                        <table class="table table-hover table-bordered mb-0">
+                        <table class="table table-hover table-bordered mb-0 align-middle">
                             <thead class="table-primary">
                                 <tr>
                                     <th>No</th>
                                     <th>NIK</th>
                                     <th>Nama Lengkap</th>
-                                    <th>Jenis Kelamin</th>
+                                    <th>L/P</th>
                                     <th>No. KK</th>
-                                    <th>Aksi</th>
+                                    <th class="text-center">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php $no = 1; foreach ($data_warga as $warga): ?>
+                                <?php 
+                                // LOOPING 1: HANYA MENAMPILKAN TABEL DAN TOMBOL
+                                $no = 1; 
+                                foreach ($data_warga as $warga): 
+                                ?>
                                 <tr>
                                     <td><?php echo $no++; ?></td>
                                     <td><?php echo $warga['nik']; ?></td>
-                                    <td><b><?php echo $warga['nama'] ? $warga['nama'] : '<span class="text-muted small">(Belum diisi)</span>'; ?></b></td>
-                                    <td><?php echo $warga['jenis_kelamin'] == 'L' ? 'Laki-laki' : ($warga['jenis_kelamin'] == 'P' ? 'Perempuan' : '-'); ?></td>
+                                    <td><b><?php echo $warga['nama']; ?></b></td>
+                                    <td><?php echo $warga['jenis_kelamin'] == 'L' ? 'L' : 'P'; ?></td>
                                     <td><?php echo $warga['no_kk'] ? $warga['no_kk'] : '-'; ?></td>
-                                    <td>
-                                        <a href="#" class="btn btn-sm btn-info text-white"><i class="bi bi-eye"></i> Detail</a>
+                                    <td class="text-center">
+                                        <button type="button" class="btn btn-sm btn-info text-white" data-bs-toggle="modal" data-bs-target="#modalDetailCari<?php echo $warga['nik']; ?>">
+                                            <i class="bi bi-eye-fill"></i> Detail
+                                        </button>
                                     </td>
                                 </tr>
                                 <?php endforeach; ?>
@@ -110,5 +115,44 @@ if (isset($_GET['keyword'])) {
 
     </div>
 </div>
+
+<?php if ($pencarian_dilakukan && count($data_warga) > 0): ?>
+    <?php foreach ($data_warga as $warga): ?>
+    <div class="modal fade" id="modalDetailCari<?php echo $warga['nik']; ?>" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header text-dark">
+                    <h5 class="modal-title fw-bold">Detail Data Warga</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-start"> 
+                    <div class="row">
+                        <div class="col-md-6 mb-2"><label class="fw-bold">NIK:</label> <p><?php echo $warga['nik']; ?></p></div>
+                        <div class="col-md-6 mb-2"><label class="fw-bold">Nama:</label> <p><?php echo $warga['nama']; ?></p></div>
+                        
+                        <div class="col-md-6 mb-2"><label class="fw-bold">No KK:</label> <p><?php echo $warga['no_kk']; ?></p></div>
+                        <div class="col-md-6 mb-2"><label class="fw-bold">Alamat:</label> <p><?php echo $warga['alamat'] ? $warga['alamat'] : '-'; ?></p></div>
+                        
+                        <div class="col-md-6 mb-2"><label class="fw-bold">TTL:</label> <p><?php echo $warga['tempat_lahir'] . ", " . $warga['tanggal_lahir']; ?></p></div>
+                        <div class="col-md-6 mb-2"><label class="fw-bold">Gender:</label> <p><?php echo $warga['jenis_kelamin'] == 'L' ? 'Laki-laki' : 'Perempuan'; ?></p></div>
+                        
+                        <div class="col-md-6 mb-2"><label class="fw-bold">Agama:</label> <p><?php echo $warga['agama']; ?></p></div>
+                        <div class="col-md-6 mb-2"><label class="fw-bold">Status Hub:</label> <p><?php echo $warga['status_hub_keluarga']; ?></p></div>
+                        
+                        <div class="col-md-6 mb-2"><label class="fw-bold">Status Kawin:</label> <p><?php echo $warga['status_perkawinan']; ?></p></div>
+                        <div class="col-md-6 mb-2"><label class="fw-bold">Pendidikan:</label> <p><?php echo $warga['pendidikan']; ?></p></div>
+                        
+                        <div class="col-md-6 mb-2"><label class="fw-bold">Pekerjaan:</label> <p><?php echo $warga['pekerjaan']; ?></p></div>
+                        <div class="col-md-6 mb-2"><label class="fw-bold">No HP:</label> <p><?php echo $warga['no_hp']; ?></p></div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <?php endforeach; ?>
+<?php endif; ?>
 
 <?php include "footer.php" ?>

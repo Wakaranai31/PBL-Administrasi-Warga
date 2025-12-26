@@ -13,19 +13,13 @@ $nik_login = $_SESSION['nik'];
 $query = mysqli_query($koneksi, "SELECT * FROM warga WHERE nik='$nik_login'");
 $data = mysqli_fetch_array($query);
 
-// --- [FIX: SABUK PENGAMAN ANTI-ERROR] ---
-// Jika data tidak ditemukan di database (karena terhapus/diedit admin), 
-// hancurkan sesi dan paksa login ulang.
+// Sabuk Pengaman
 if (!$data) {
     session_unset();
     session_destroy();
-    echo "<script>
-            alert('Sesi tidak valid atau data akun Anda telah dihapus. Silakan Login ulang.'); 
-            window.location='../login.php';
-          </script>";
+    echo "<script>alert('Sesi tidak valid. Silakan Login ulang.'); window.location='../login.php';</script>";
     exit();
 }
-// ----------------------------------------
 
 // 3. Cek Status Pengajuan
 $cek_request = mysqli_query($koneksi, "SELECT * FROM pengajuan_perubahan WHERE nik='$nik_login' ORDER BY id_pengajuan DESC LIMIT 1");
@@ -72,6 +66,10 @@ $info_request = mysqli_fetch_array($cek_request);
         <div class="card">
             <div class="card-body">
                 <div class="row mb-2">
+                    <div class="col-md-3 fw-bold">Nomor KK</div>
+                    <div class="col-md-9">: <?php echo $data['no_kk']; ?></div>
+                </div>
+                <div class="row mb-2">
                     <div class="col-md-3 fw-bold">NIK</div>
                     <div class="col-md-9">: <?php echo $data['nik']; ?></div>
                 </div>
@@ -92,29 +90,30 @@ $info_request = mysqli_fetch_array($cek_request);
                     <div class="col-md-9">: <?php echo $data['agama']; ?></div>
                 </div>
                 <div class="row mb-2">
-                    <div class="col-md-3 fw-bold">Status Perkawinan</div>
-                    <div class="col-md-9">: <?php echo $data['status_perkawinan']; ?></div>
+                    <div class="col-md-3 fw-bold">Pendidikan</div>
+                    <div class="col-md-9">: <?php echo $data['pendidikan']; ?></div>
                 </div>
                 <div class="row mb-2">
                     <div class="col-md-3 fw-bold">Pekerjaan</div>
                     <div class="col-md-9">: <?php echo $data['pekerjaan']; ?></div>
                 </div>
                 <div class="row mb-2">
-                    <div class="col-md-3 fw-bold">No HP</div>
-                    <div class="col-md-9">: <?php echo $data['no_hp']; ?></div>
+                    <div class="col-md-3 fw-bold">Status Perkawinan</div>
+                    <div class="col-md-9">: <?php echo $data['status_perkawinan']; ?></div>
                 </div>
                 <div class="row mb-2">
-                    <div class="col-md-3 fw-bold">Status Keluarga</div>
-                    <div class="col-md-9">: <span class="badge bg-info text-dark"><?php echo $data['status_hub_keluarga']; ?></span></div>
+                    <div class="col-md-3 fw-bold">Status Hubungan</div>
+                    <div class="col-md-9">: <span class="text-dark"><?php echo $data['status_hub_keluarga']; ?></span></div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-md-3 fw-bold">No HP</div>
+                    <div class="col-md-9">: <?php echo $data['no_hp']; ?></div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
-<script src="../assets/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script>
-    // Script Alert LocalStorage (Sama seperti sebelumnya)
     document.addEventListener("DOMContentLoaded", function() {
         var alerts = document.querySelectorAll('.alert-notif');
         alerts.forEach(function(alert) {

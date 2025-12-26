@@ -23,16 +23,29 @@ if (isset($_POST['daftar'])) {
     if ($pass1 !== $pass2) {
         echo "<script>alert('Password konfirmasi tidak cocok!');</script>";
     } else {
-        // 1. CEK NO KK
+        // 1. CEK NO KK (Apakah KK terdaftar?)
         $cek_kk = mysqli_query($koneksi, "SELECT no_kk FROM keluarga WHERE no_kk = '$no_kk'");
+        
+        // 2. CEK NIK (Apakah sudah ada?)
+        $cek_nik = mysqli_query($koneksi, "SELECT nik FROM warga WHERE nik = '$nik'");
+
         if (mysqli_num_rows($cek_kk) == 0) {
             echo "<script>alert('GAGAL: Nomor KK tidak ditemukan! Silakan daftar KK dulu.'); window.location='daftar_kk.php';</script>";
+        } elseif (mysqli_num_rows($cek_nik) > 0) {
+            echo "<script>alert('NIK sudah terdaftar! Silakan Login.');</script>";
         } else {
-            // 2. CEK NIK
-            $cek_nik = mysqli_query($koneksi, "SELECT nik FROM warga WHERE nik = '$nik'");
-            if (mysqli_num_rows($cek_nik) > 0) {
-                 echo "<script>alert('NIK sudah terdaftar! Silakan Login.');</script>";
-            } else {
+            // [VALIDASI BARU] SATPAM KEPALA KELUARGA
+            $validasi_aman = true;
+            if($status_hub == 'Kepala Keluarga') {
+                $cek_head = mysqli_query($koneksi, "SELECT nama FROM warga WHERE no_kk = '$no_kk' AND status_hub_keluarga = 'Kepala Keluarga'");
+                if(mysqli_num_rows($cek_head) > 0) {
+                    $existing = mysqli_fetch_assoc($cek_head);
+                    $validasi_aman = false;
+                    echo "<script>alert('PENDAFTARAN GAGAL: Kartu Keluarga ini sudah memiliki Kepala Keluarga atas nama ".$existing['nama'].". Anda tidak bisa mendaftar sebagai Kepala Keluarga.');</script>";
+                }
+            }
+
+            if($validasi_aman) {
                 // 3. SIMPAN DATA
                 $pass_hash = password_hash($pass1, PASSWORD_DEFAULT);
                 $query_warga = "INSERT INTO warga (
@@ -48,6 +61,11 @@ if (isset($_POST['daftar'])) {
                   )";
 
                 if (mysqli_query($koneksi, $query_warga)) {
+                    // [SINKRONISASI] Jika pendaftar adalah Kepala Keluarga, update tabel keluarga
+                    if($status_hub == 'Kepala Keluarga') {
+                        mysqli_query($koneksi, "UPDATE keluarga SET kepala_keluarga = '$nama' WHERE no_kk = '$no_kk'");
+                    }
+
                     echo "<script>alert('Pendaftaran Berhasil! Silakan Login.'); window.location='login.php';</script>";
                 } else {
                     echo "<script>alert('Error: " . mysqli_error($koneksi) . "');</script>";
@@ -57,7 +75,6 @@ if (isset($_POST['daftar'])) {
     }
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -68,8 +85,6 @@ if (isset($_POST['daftar'])) {
     <link rel="stylesheet" href="../fontawesome/css/all.min.css">
     
     <link rel="stylesheet" href="../css/style_login.css">
-    
-
 </head>
 
 <body>
