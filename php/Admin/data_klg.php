@@ -154,15 +154,15 @@ while($row = mysqli_fetch_assoc($result)) {
                             <td class="text-center"><?php echo $row['rt']; ?> / <?php echo $row['rw']; ?></td>
                             <td class="sticky-aksi text-center">
                                 <button class="btn btn-lihat btn-sm" data-bs-toggle="modal" data-bs-target="#modalDetailKK<?php echo $row['no_kk']; ?>">
-                                    <i class="bi bi-eye-fill"></i>
+                                    <i class="bi bi-eye-fill"></i> Lihat
                                 </button>
 
                                 <button class="btn btn-edit btn-sm" data-bs-toggle="modal" data-bs-target="#modalEditKK<?php echo $row['no_kk']; ?>">
-                                    <i class="bi bi-pencil-square"></i>
+                                    <i class="bi bi-pencil-square"></i> Edit
                                 </button> 
                                 
                                 <a href="data_klg.php?hapus=<?php echo $row['no_kk']; ?>" class="btn btn-hapus btn-sm" onclick="return confirm('PERINGATAN: Menghapus KK ini akan MENGHAPUS SELURUH DATA WARGA yang terdaftar di dalamnya.\n\nYakin ingin menghapus KK Bpk. <?php echo $row['kepala_keluarga']; ?>?')">
-                                    <i class="bi bi-trash-fill"></i>
+                                    <i class="bi bi-trash-fill"></i> Hapus
                                 </a>
                             </td>
                         </tr>

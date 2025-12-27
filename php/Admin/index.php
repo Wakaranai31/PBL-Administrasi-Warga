@@ -49,7 +49,7 @@ $jumlah_surat = $data_surat['total'];
 
             <div class="stat-card">
                 <h3><?php echo $jumlah_surat; ?></h3>
-                <p>Pengajuan Masuk</p>
+                <p>Total Pengajuan</p>
             </div>
 
         </div>
