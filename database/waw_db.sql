@@ -1,13 +1,3 @@
-CREATE DATABASE IF NOT EXISTS waw_db;
-USE waw_db;
-
---Hapus tabel lama jika ada
---DROP TABLE IF EXISTS log_warga;
---DROP TABLE IF EXISTS pengajuan_perubahan;
---DROP TABLE IF EXISTS warga;
---DROP TABLE IF EXISTS keluarga;
---DROP TABLE IF EXISTS admin;
-
 -- Tabel Admin
 CREATE TABLE admin (
   id_admin int(2) NOT NULL,
@@ -89,7 +79,8 @@ CREATE TABLE log_warga (
 
 -- ==========================================
 -- INSERT DATA DUMMY ADMIN
+-- password : admin
 -- ==========================================
 
 INSERT INTO admin (id_admin, nik, password, nama) VALUES
-(1, '1234567890123456', '$2y$10$FjptIWWT6.bPF1iSBpMv0OFRNrXc0WTAkuN7umUDmngsKXNLkdBWW', 'Johanes Alpino'); --password : admin
+(1, '1234567890123456', '$2y$10$FjptIWWT6.bPF1iSBpMv0OFRNrXc0WTAkuN7umUDmngsKXNLkdBWW', 'Johanes Alpino'); 
