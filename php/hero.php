@@ -8,20 +8,20 @@
     <title>Sistem Administrasi RT/RW</title>
 
     <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../fontawesome/css/all.min.css">
     <link rel="stylesheet" href="../css/style_hero.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
 </head>
 
 <body>
     <div class="main-wrapper">
         <nav class="navbar glass-effect">
             <div class="navbar-brand">
-                <i class="fa-solid fa-house-user"></i>
+                <i class="bi bi-people"></i>
                 <span>Administrasi Warga</span>
             </div>
             <div class="navbar-auth">
-                <a href="login.html" class="btn btn-login"><i class="fa-solid fa-user"></i> Login</a>
+                <a href="login.php" class="btn btn-login"><i class="bi bi-door-open-fill"></i> Login</a>
             </div>
         </nav>
 

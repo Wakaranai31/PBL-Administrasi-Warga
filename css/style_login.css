@@ -35,7 +35,9 @@ body {
     border: 1px solid var(--glass-border); 
     box-shadow: 0 8px 32px var(--shadow-light); 
 }
+
 .login-container {
+    z-index: 1;
     display: flex;
     justify-content: center; 
     align-items: center;    
@@ -62,7 +64,7 @@ body {
 }
 
 .login-header h2 {
-    font-size: 2rem;
+    font-size: 1.5rem;
     color: var(--text-dark);
     margin-bottom: 10px;
 }
