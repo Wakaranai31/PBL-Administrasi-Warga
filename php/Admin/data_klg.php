@@ -22,7 +22,6 @@ if (isset($_POST['tambah_kk'])) {
     $rt         = mysqli_real_escape_string($koneksi, $_POST['rt']);
     $rw         = mysqli_real_escape_string($koneksi, $_POST['rw']);
     $kode_pos   = mysqli_real_escape_string($koneksi, $_POST['kode_pos']);
-    
     $kelurahan  = mysqli_real_escape_string($koneksi, $_POST['kelurahan']);
     $kecamatan  = mysqli_real_escape_string($koneksi, $_POST['kecamatan']);
     $kota       = mysqli_real_escape_string($koneksi, $_POST['kota']);
@@ -38,7 +37,6 @@ if (isset($_POST['tambah_kk'])) {
         
         if (mysqli_query($koneksi, $query)) {
             // [LOG] CATAT TAMBAH KK
-            // NIK diset NULL karena ini data KK, bukan spesifik satu warga
             $log_detail = "Menambahkan Kartu Keluarga Baru. No KK: $no_kk, Kepala: $kepala";
             mysqli_query($koneksi, "INSERT INTO log_warga (nik, aksi, detail, id_admin) VALUES (NULL, 'Tambah KK', '$log_detail', '$id_admin_log')");
 
@@ -49,7 +47,7 @@ if (isset($_POST['tambah_kk'])) {
     }
 }
 
-// 3. LOGIKA UPDATE DATA KELUARGA
+// 3. LOGIKA UPDATE DATA KELUARGA (DIPERBAIKI UNTUK SINKRONISASI)
 if (isset($_POST['update_kk'])) {
     $no_kk_lama = $_POST['no_kk_lama']; 
     $no_kk_baru = mysqli_real_escape_string($koneksi, $_POST['no_kk']);
@@ -58,7 +56,6 @@ if (isset($_POST['update_kk'])) {
     $rt         = mysqli_real_escape_string($koneksi, $_POST['rt']);
     $rw         = mysqli_real_escape_string($koneksi, $_POST['rw']);
     $kode_pos   = mysqli_real_escape_string($koneksi, $_POST['kode_pos']);
-    
     $kelurahan  = mysqli_real_escape_string($koneksi, $_POST['kelurahan']);
     $kecamatan  = mysqli_real_escape_string($koneksi, $_POST['kecamatan']);
     $kota       = mysqli_real_escape_string($koneksi, $_POST['kota']);
@@ -78,11 +75,20 @@ if (isset($_POST['update_kk'])) {
             WHERE no_kk = '$no_kk_lama'";
 
     if (mysqli_query($koneksi, $query)) {
+        
+        // [FITUR BARU] SINKRONISASI KE TABEL WARGA
+        // Jika nama kepala keluarga diubah disini, cari warga yang statusnya 'Kepala Keluarga' di KK ini, lalu ubah namanya juga.
+        $cek_warga_kepala = mysqli_query($koneksi, "SELECT nik FROM warga WHERE no_kk = '$no_kk_baru' AND status_hub_keluarga = 'Kepala Keluarga'");
+        if(mysqli_num_rows($cek_warga_kepala) > 0) {
+            // Update nama warga tersebut agar sama dengan inputan baru
+            mysqli_query($koneksi, "UPDATE warga SET nama = '$kepala' WHERE no_kk = '$no_kk_baru' AND status_hub_keluarga = 'Kepala Keluarga'");
+        }
+
         // [LOG] CATAT EDIT KK
-        $log_detail = "Memperbarui Data KK No: $no_kk_lama. Kepala Keluarga: $kepala";
+        $log_detail = "Memperbarui Data KK No: $no_kk_lama. Kepala Keluarga: $kepala (Data warga terkait juga disinkronisasi)";
         mysqli_query($koneksi, "INSERT INTO log_warga (nik, aksi, detail, id_admin) VALUES (NULL, 'Edit KK', '$log_detail', '$id_admin_log')");
 
-        echo "<script>alert('Data KK Berhasil Diperbarui!'); window.location='data_klg.php';</script>";
+        echo "<script>alert('Data KK Berhasil Diperbarui & Sinkron dengan Data Warga!'); window.location='data_klg.php';</script>";
     } else {
         echo "<script>alert('Gagal Update: " . mysqli_error($koneksi) . "');</script>";
     }
@@ -264,7 +270,11 @@ while($row = mysqli_fetch_assoc($result)) {
                             
                             <div class="col-12">
                                 <label class="small text-muted fw-bold d-block">Alamat Lengkap</label>
-                                <span class="text-dark bg-light d-block p-2 rounded border"><?php echo $row['alamat']; ?></span>
+                                <span class="text-dark"><?php echo $row['alamat']; ?></span>
+                                <span class="text-dark">
+                                    Kel. <?php echo $row['kelurahan']; ?>, <?php echo $row['kecamatan']; ?>,
+                                    <?php echo $row['kota']; ?>, <?php echo $row['provinsi']; ?>
+                                </span>
                             </div>
 
                             <div class="col-md-3">
@@ -275,18 +285,11 @@ while($row = mysqli_fetch_assoc($result)) {
                                 <label class="small text-muted fw-bold d-block">RW</label>
                                 <span class="text-dark"><?php echo $row['rw']; ?></span>
                             </div>
-                             <div class="col-md-6">
+                            <div class="col-md-6">
                                 <label class="small text-muted fw-bold d-block">Kode Pos</label>
                                 <span class="text-dark"><?php echo $row['kode_pos']; ?></span>
                             </div>
 
-                            <div class="col-12">
-                                <label class="small text-muted fw-bold d-block">Wilayah Administratif</label>
-                                <span class="text-dark">
-                                    Kel. <?php echo $row['kelurahan']; ?>, Kec. <?php echo $row['kecamatan']; ?>, 
-                                    <?php echo $row['kota']; ?>, <?php echo $row['provinsi']; ?>
-                                </span>
-                            </div>
                         </div>
                     </div>
 
@@ -329,7 +332,7 @@ while($row = mysqli_fetch_assoc($result)) {
 
                 </div>
             </div>
-            <div class="modal-footer bg-light">
+            <div class="modal-footer">
                 <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Tutup</button>
             </div>
         </div>

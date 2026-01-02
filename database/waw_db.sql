@@ -8,7 +8,7 @@ CREATE TABLE admin (
   UNIQUE (nik)
 );
 
--- Tabel Keluarga (Induk untuk Warga)
+-- Tabel Keluarga
 CREATE TABLE keluarga (
   no_kk varchar(16) NOT NULL,
   kepala_keluarga varchar(100) DEFAULT NULL,
@@ -23,7 +23,7 @@ CREATE TABLE keluarga (
   PRIMARY KEY (no_kk)
 );
 
--- Tabel Warga (Anak dari Keluarga)
+-- Tabel Warga
 CREATE TABLE warga (
   nik varchar(16) NOT NULL,
   no_kk varchar(16) DEFAULT NULL,
