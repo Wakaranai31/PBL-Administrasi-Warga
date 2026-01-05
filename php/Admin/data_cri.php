@@ -65,7 +65,7 @@ if (isset($_GET['keyword'])) {
                 <div class="card p-3 shadow-sm">
                     <div class="table-responsive">
                         <table class="table table-hover table-bordered mb-0 align-middle">
-                            <thead class="table-primary">
+                            <thead class="table-secondary">
                                 <tr>
                                     <th>No</th>
                                     <th>NIK</th>
@@ -89,7 +89,7 @@ if (isset($_GET['keyword'])) {
                                     <td><?php echo $warga['no_kk'] ? $warga['no_kk'] : '-'; ?></td>
                                     <td class="text-center">
                                         <button type="button" class="btn btn-sm btn-info text-white" data-bs-toggle="modal" data-bs-target="#modalDetailCari<?php echo $warga['nik']; ?>">
-                                            <i class="bi bi-eye-fill"></i> Detail
+                                        <i class="bi bi-eye-fill"></i> Detail
                                         </button>
                                     </td>
                                 </tr>

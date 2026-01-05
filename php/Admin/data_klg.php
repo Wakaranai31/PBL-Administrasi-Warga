@@ -134,7 +134,6 @@ while($row = mysqli_fetch_assoc($result)) {
             <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#modalTambahKK">
                 <i class="bi bi-plus-circle-fill"></i> Tambah KK Baru
             </button>
-
             <div class="table-responsive p-0">
                 <table class="table table-hover">
                     <thead> 
@@ -162,7 +161,6 @@ while($row = mysqli_fetch_assoc($result)) {
                                 <button class="btn btn-lihat btn-sm" data-bs-toggle="modal" data-bs-target="#modalDetailKK<?php echo $row['no_kk']; ?>">
                                     <i class="bi bi-eye-fill"></i> Lihat
                                 </button>
-
                                 <button class="btn btn-edit btn-sm" data-bs-toggle="modal" data-bs-target="#modalEditKK<?php echo $row['no_kk']; ?>">
                                     <i class="bi bi-pencil-square"></i> Edit
                                 </button> 
@@ -276,7 +274,6 @@ while($row = mysqli_fetch_assoc($result)) {
                                     <?php echo $row['kota']; ?>, <?php echo $row['provinsi']; ?>
                                 </span>
                             </div>
-
                             <div class="col-md-3">
                                 <label class="small text-muted fw-bold d-block">RT</label>
                                 <span class="text-dark"><?php echo $row['rt']; ?></span>
@@ -289,23 +286,20 @@ while($row = mysqli_fetch_assoc($result)) {
                                 <label class="small text-muted fw-bold d-block">Kode Pos</label>
                                 <span class="text-dark"><?php echo $row['kode_pos']; ?></span>
                             </div>
-
                         </div>
                     </div>
-
                     <div class="col-lg-5">
                         <h6 class="fw-bold text-success mb-3 border-bottom pb-2">
                             <i class="bi bi-people-fill me-2"></i>Anggota Keluarga Terdaftar
                         </h6>
-
                         <div class="list-group list-group-flush border rounded" style="max-height: 350px; overflow-y: auto;">
                             <?php
                             $no_kk_detail = $row['no_kk'];
-                            $query_anggota = mysqli_query($koneksi, "SELECT nama, status_hub_keluarga FROM warga WHERE no_kk = '$no_kk_detail' ORDER BY FIELD(status_hub_keluarga, 'Kepala Keluarga', 'Istri', 'Anak', 'Famili Lain') ASC");
+                            $query_anggota = mysqli_query($koneksi, "SELECT nama, status_hub_keluarga FROM warga WHERE no_kk = '$no_kk_detail' ORDER BY FIELD(status_hub_keluarga, 'Kepala Keluarga', 'Istri', 'Anak') ASC");
                             
                             if(mysqli_num_rows($query_anggota) > 0){
                                 while($anggota = mysqli_fetch_assoc($query_anggota)){
-                                    // Tentukan warna badge berdasarkan status
+                                    
                                     $badge_bg = 'bg-secondary';
                                     if($anggota['status_hub_keluarga'] == 'Kepala Keluarga') $badge_bg = 'bg-primary';
                                     if($anggota['status_hub_keluarga'] == 'Istri') $badge_bg = 'bg-success';
@@ -327,7 +321,6 @@ while($row = mysqli_fetch_assoc($result)) {
                             }
                             ?>
                         </div>
-                        <small class="text-muted fst-italic mt-2 d-block">* Data diambil dari tabel Warga</small>
                     </div>
 
                 </div>
@@ -342,7 +335,7 @@ while($row = mysqli_fetch_assoc($result)) {
 <div class="modal fade" id="modalEditKK<?php echo $row['no_kk']; ?>" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <div class="modal-header bg-warning">
+            <div class="modal-header">
                 <h5 class="modal-title text-dark fw-bold">Edit Data Keluarga</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>

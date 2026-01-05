@@ -399,7 +399,7 @@ while($row = mysqli_fetch_assoc($result)) {
 
 <div class="modal fade" id="modalRiwayat<?php echo $row['nik']; ?>" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable"> <div class="modal-content">
-            <div class="modal-header bg-info text-white">
+            <div class="modal-header text-dark">
                 <h5 class="modal-title fw-bold"><i class="bi bi-clock-history me-2"></i>Riwayat Aktivitas: <?php echo $row['nama']; ?></h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
@@ -464,7 +464,7 @@ while($row = mysqli_fetch_assoc($result)) {
 <div class="modal fade" id="modalEdit<?php echo $row['nik']; ?>" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
-            <div class="modal-header bg-warning"> 
+            <div class="modal-header"> 
                 <h5 class="modal-title text-dark">Edit Data Warga</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>

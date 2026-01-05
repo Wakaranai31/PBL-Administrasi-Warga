@@ -1,3 +1,17 @@
+<?php
+include 'koneksi.php';
+// Hitung Jumlah Warga
+$query_warga = mysqli_query($koneksi, "SELECT COUNT(*) as total FROM warga");
+$data_warga = mysqli_fetch_assoc($query_warga);
+$jumlah_warga = $data_warga['total'];
+
+// Hitung Jumlah Keluarga (KK)
+$query_kk = mysqli_query($koneksi, "SELECT COUNT(*) as total FROM keluarga");
+$data_kk = mysqli_fetch_assoc($query_kk);
+$jumlah_kk = $data_kk['total'];
+
+?>
+
 <!DOCTYPE html>
 <html lang="id">
 
@@ -31,15 +45,15 @@
                 <p class="hero-description">
                     Platform digital untuk untuk mengelola data warga, pelayanan, dan laporan dengan efisien.
                 </p>
-                <a href="#" class="btn btn-primary hero-cta">Pelajari Lebih Lanjut</a>
+                <a href="login.php" class="btn btn-primary hero-cta">Pelajari Lebih Lanjut</a>
             </div>
             <div class="hero-stats">
                 <div class="stat-card glass-effect">
-                    <p class="stat-number">0</p>
+                    <p class="stat-number"><?php echo $jumlah_warga; ?></p>
                     <p class="stat-label">Total Warga Terdaftar</p>
                 </div>
                 <div class="stat-card glass-effect">
-                    <p class="stat-number">0</p>
+                    <p class="stat-number"><?php echo $jumlah_kk; ?></p>
                     <p class="stat-label">Kepala Keluarga Aktif</p>
                 </div>
             </div>
