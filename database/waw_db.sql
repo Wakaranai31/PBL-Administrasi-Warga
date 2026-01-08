@@ -1,5 +1,6 @@
 CREATE DATABASE waw_db;
 USE waw_db;
+
 -- Tabel Admin
 CREATE TABLE admin (
   id_admin int(2) NOT NULL,

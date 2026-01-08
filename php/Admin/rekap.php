@@ -51,9 +51,9 @@ elseif ($kategori == 'anak') {
                 <h2><i class="bi bi-file-earmark-text-fill"></i>Rekap Data</h2>
             </div>
             <div class="card filter-card shadow-sm">
-                <h4 class="mb-3 text-primary"><i class="bi bi-filter-circle"></i> Pilih Kategori</h4>
+                <h5 class="mb-3 text-primary"><i class="bi bi-filter-circle"></i> Pilih Kategori</h5>
                 <form method="GET" action="">
-                    <div class="input-group input-group-lg">
+                    <div class="input-group input-group-sm">
                         <span class="input-group-text bg-white border-end-0"><i class="bi bi-collection-fill text-primary"></i></span>
                         <select name="kategori" class="form-select border-start-0" required>
                             <option value="" disabled selected>-- Pilih Jenis Data --</option>
@@ -172,7 +172,7 @@ elseif ($kategori == 'anak') {
             <?php else: ?>
                 <div class="alert alert-info border-start border-info border-4 text-center p-5">
                     <h1><i class="bi bi-bar-chart-line"></i></h1>
-                    <h4>Silakan Pilih Kategori Laporan</h4>
+                    <h6>Silakan Pilih Kategori Laporan</h6>
                     <p>Pilih jenis data pada dropdown di atas, lalu klik tombol <b>Tampilkan</b>.</p>
                 </div>
             <?php endif; ?>
