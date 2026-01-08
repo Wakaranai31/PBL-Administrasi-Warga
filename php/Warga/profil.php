@@ -2,18 +2,15 @@
 session_start();
 include '../koneksi.php';
 
-// 1. Cek Login
 if (!isset($_SESSION['nik'])) {
     echo "<script>window.location='../login.php';</script>";
     exit();
 }
 
-// 2. Ambil data user
 $nik_login = $_SESSION['nik'];
 $query = mysqli_query($koneksi, "SELECT * FROM warga WHERE nik='$nik_login'");
 $data = mysqli_fetch_array($query);
 
-// Sabuk Pengaman
 if (!$data) {
     session_unset();
     session_destroy();
@@ -21,7 +18,6 @@ if (!$data) {
     exit();
 }
 
-// 3. Cek Status Pengajuan
 $cek_request = mysqli_query($koneksi, "SELECT * FROM pengajuan_perubahan WHERE nik='$nik_login' ORDER BY id_pengajuan DESC LIMIT 1");
 $info_request = mysqli_fetch_array($cek_request);
 ?>
@@ -55,14 +51,12 @@ $info_request = mysqli_fetch_array($cek_request);
                 </div>
             <?php endif; ?>
         <?php endif; ?>
-
         <div class="d-flex justify-content-between align-items-center mb-3">
             <h2>Profil Saya</h2>
             <?php if(!$info_request || $info_request['status'] != 'Pending'): ?>
             <a href="edit_profile.php" class="btn btn-primary btn-sm"><i class="bi bi-pencil-square"></i> Edit Profil</a>
             <?php endif; ?>
         </div>
-
         <div class="card">
             <div class="card-body">
                 <div class="row mb-2">

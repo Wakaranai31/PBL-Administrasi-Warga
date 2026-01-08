@@ -2,26 +2,20 @@
 session_start();
 include '../koneksi.php';
 
-// 1. Cek Login
 if (!isset($_SESSION['nik'])) {
     header("Location: ../login.php");
     exit();
 }
 
-// 2. Ambil NIK Target dari URL
 $nik_target = isset($_GET['nik']) ? $_GET['nik'] : '';
 if(empty($nik_target)) {
     header("Location: keluarga.php");
     exit();
 }
 
-// 3. Ambil Data Awal
 $query = mysqli_query($koneksi, "SELECT * FROM warga WHERE nik='$nik_target'");
 $data = mysqli_fetch_array($query);
-
-// 4. LOGIKA PENGAJUAN
 if (isset($_POST['update'])) {
-    // Tangkap input
     $nama           = mysqli_real_escape_string($koneksi, $_POST['nama']);
     $tempat_lahir   = mysqli_real_escape_string($koneksi, $_POST['tempat_lahir']);
     $tanggal_lahir  = mysqli_real_escape_string($koneksi, $_POST['tanggal_lahir']);
@@ -32,12 +26,9 @@ if (isset($_POST['update'])) {
     $no_hp          = mysqli_real_escape_string($koneksi, $_POST['no_hp']);
     $status_perkawinan = mysqli_real_escape_string($koneksi, $_POST['status_perkawinan']);
     $status_hub_baru = mysqli_real_escape_string($koneksi, $_POST['status_hub_keluarga']);
-
-    // [VALIDASI] SATPAM KEPALA KELUARGA
     $validasi_aman = true;
     if($status_hub_baru == 'Kepala Keluarga') {
-        $no_kk_target = $data['no_kk']; // Ambil KK dari data awal
-        // Cek apakah ada Kepala Keluarga selain user ini di KK tersebut
+        $no_kk_target = $data['no_kk'];
         $cek_head = mysqli_query($koneksi, "SELECT nama FROM warga WHERE no_kk = '$no_kk_target' AND status_hub_keluarga = 'Kepala Keluarga' AND nik != '$nik_target'");
         if(mysqli_num_rows($cek_head) > 0) {
             $existing = mysqli_fetch_assoc($cek_head);
@@ -45,14 +36,11 @@ if (isset($_POST['update'])) {
             echo "<script>alert('PERMINTAAN DITOLAK: KK ini sudah memiliki Kepala Keluarga (".$existing['nama']."). Anda tidak bisa mengajukan perubahan menjadi Kepala Keluarga.');</script>";
         }
     }
-
     if($validasi_aman) {
-        // Cek Pending
         $cek_pending = mysqli_query($koneksi, "SELECT * FROM pengajuan_perubahan WHERE nik='$nik_target' AND status='Pending'");
         if(mysqli_num_rows($cek_pending) > 0) {
             $error = "Anggota keluarga ini masih memiliki pengajuan yang belum diproses.";
         } else {
-            // Insert Pengajuan
             $insert = mysqli_query($koneksi, "INSERT INTO pengajuan_perubahan 
                 (nik, jenis_perubahan, keterangan, status, 
                 nama_baru, tempat_lahir_baru, tanggal_lahir_baru, jenis_kelamin_baru, 
@@ -61,7 +49,6 @@ if (isset($_POST['update'])) {
                 ('$nik_target', 'Update Anggota Keluarga', 'Perubahan data keluarga', 'Pending',
                 '$nama', '$tempat_lahir', '$tanggal_lahir', '$jenis_kelamin',
                 '$agama', '$no_hp', '$pendidikan', '$pekerjaan', '$status_perkawinan', '$status_hub_baru')");
-                
             if ($insert) {
                 echo "<script>alert('Pengajuan perubahan data terkirim! Menunggu persetujuan Admin.'); window.location='keluarga.php';</script>";
             } else {
@@ -81,7 +68,6 @@ if (isset($_POST['update'])) {
             <h2>Edit Anggota Keluarga</h2>
             <a href="keluarga.php" class="btn btn-secondary btn-sm"><i class="bi bi-arrow-left"></i> Kembali</a>
         </div>
-
         <div class="row justify-content-center">
             <div class="col-md-10">
                 <div class="card">
@@ -99,7 +85,6 @@ if (isset($_POST['update'])) {
                                 <input type="text" name="nama" class="form-control" value="<?= $data['nama']; ?>" required>
                             </div>
                         </div>
-
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label class="form-label fw-bold">Tempat Lahir</label>
@@ -110,7 +95,6 @@ if (isset($_POST['update'])) {
                                 <input type="date" name="tanggal_lahir" class="form-control" value="<?= $data['tanggal_lahir']; ?>" required>
                             </div>
                         </div>
-
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label class="form-label fw-bold">Jenis Kelamin</label>
@@ -133,7 +117,6 @@ if (isset($_POST['update'])) {
                                 </select>
                             </div>
                         </div>
-
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label class="form-label fw-bold">Pendidikan Terakhir</label>
@@ -144,7 +127,6 @@ if (isset($_POST['update'])) {
                                 <input type="text" name="pekerjaan" class="form-control" value="<?= $data['pekerjaan']; ?>">
                             </div>
                         </div>
-
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label class="form-label fw-bold">Status Perkawinan</label>
@@ -163,7 +145,6 @@ if (isset($_POST['update'])) {
                                 <input type="text" name="agama" class="form-control" value="<?= $data['agama']; ?>">
                             </div>
                         </div>
-
                         <div class="mb-3">
                             <label class="form-label fw-bold">No HP (WhatsApp)</label>
                             <input type="text" name="no_hp" class="form-control" value="<?= $data['no_hp']; ?>">

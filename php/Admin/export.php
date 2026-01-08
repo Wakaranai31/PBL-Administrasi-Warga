@@ -2,20 +2,17 @@
 session_start();
 include '../koneksi.php';
 
-// 1. Cek Keamanan
 if (!isset($_SESSION['nik']) || $_SESSION['role'] != 'admin') {
     header("Location: ../login.php");
     exit();
 }
 
-// 2. Ambil Kategori
 $kategori = isset($_GET['kategori']) ? $_GET['kategori'] : '';
 if(empty($kategori)){
     echo "<script>window.close();</script>";
     exit();
 }
 
-// 3. Logika Query (Sama seperti data_lpr.php)
 $judul = "";
 $query = "";
 
@@ -61,8 +58,6 @@ $result = mysqli_query($koneksi, $query);
 <body>
 <div class="container-fluid py-4">
     <h2><?= $judul; ?></h2>
-    <p>RT 03 / RW 05 - Kota Batam</p>
-    
     <div class="data-tables datatable-dark mt-4">
         <table class="table table-bordered table-striped" id="mauexport" width="100%" cellspacing="0">
             <thead>
@@ -115,11 +110,9 @@ $result = mysqli_query($koneksi, $query);
                         </tr>
                     <?php else: ?>
                         <?php
-                            // Hitung Usia & Alamat
                             $lahir = new DateTime($row['tanggal_lahir']);
                             $today = new DateTime();
                             $usia = $today->diff($lahir)->y;
-                            
                             $no_kk = $row['no_kk'];
                             $q_alamat = mysqli_query($koneksi, "SELECT alamat FROM keluarga WHERE no_kk='$no_kk'");
                             $d_alamat = mysqli_fetch_array($q_alamat);
@@ -155,7 +148,6 @@ $(document).ready(function() {
     } );
 } );
 </script>
-
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 <script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/buttons/1.6.5/js/dataTables.buttons.min.js"></script>

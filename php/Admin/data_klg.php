@@ -2,19 +2,16 @@
 session_start();
 include '../koneksi.php';
 
-// 1. CEK KEAMANAN
 if (!isset($_SESSION['nik']) || $_SESSION['role'] != 'admin') {
     header("Location: ../login.php");
     exit();
 }
 
-// [LOG FITUR] AMBIL ID ADMIN
 $nik_admin_session = $_SESSION['nik'];
 $q_admin_log = mysqli_query($koneksi, "SELECT id_admin FROM admin WHERE nik = '$nik_admin_session'");
 $d_admin_log = mysqli_fetch_array($q_admin_log);
 $id_admin_log = $d_admin_log['id_admin'];
 
-// 2. LOGIKA TAMBAH DATA KELUARGA
 if (isset($_POST['tambah_kk'])) {
     $no_kk      = mysqli_real_escape_string($koneksi, $_POST['no_kk']);
     $kepala     = mysqli_real_escape_string($koneksi, $_POST['kepala_keluarga']);
@@ -26,8 +23,6 @@ if (isset($_POST['tambah_kk'])) {
     $kecamatan  = mysqli_real_escape_string($koneksi, $_POST['kecamatan']);
     $kota       = mysqli_real_escape_string($koneksi, $_POST['kota']);
     $provinsi   = mysqli_real_escape_string($koneksi, $_POST['provinsi']);
-
-    // Cek duplikat No KK
     $cek = mysqli_query($koneksi, "SELECT no_kk FROM keluarga WHERE no_kk = '$no_kk'");
     if (mysqli_num_rows($cek) > 0) {
         echo "<script>alert('Gagal: Nomor KK sudah terdaftar!');</script>";
@@ -36,7 +31,6 @@ if (isset($_POST['tambah_kk'])) {
                   VALUES ('$no_kk', '$kepala', '$alamat', '$rt', '$rw', '$kode_pos', '$kelurahan', '$kecamatan', '$kota', '$provinsi')";
         
         if (mysqli_query($koneksi, $query)) {
-            // [LOG] CATAT TAMBAH KK
             $log_detail = "Menambahkan Kartu Keluarga Baru. No KK: $no_kk, Kepala: $kepala";
             mysqli_query($koneksi, "INSERT INTO log_warga (nik, aksi, detail, id_admin) VALUES (NULL, 'Tambah KK', '$log_detail', '$id_admin_log')");
 
@@ -47,7 +41,6 @@ if (isset($_POST['tambah_kk'])) {
     }
 }
 
-// 3. LOGIKA UPDATE DATA KELUARGA (DIPERBAIKI UNTUK SINKRONISASI)
 if (isset($_POST['update_kk'])) {
     $no_kk_lama = $_POST['no_kk_lama']; 
     $no_kk_baru = mysqli_real_escape_string($koneksi, $_POST['no_kk']);
@@ -75,16 +68,11 @@ if (isset($_POST['update_kk'])) {
             WHERE no_kk = '$no_kk_lama'";
 
     if (mysqli_query($koneksi, $query)) {
-        
-        // [FITUR BARU] SINKRONISASI KE TABEL WARGA
-        // Jika nama kepala keluarga diubah disini, cari warga yang statusnya 'Kepala Keluarga' di KK ini, lalu ubah namanya juga.
         $cek_warga_kepala = mysqli_query($koneksi, "SELECT nik FROM warga WHERE no_kk = '$no_kk_baru' AND status_hub_keluarga = 'Kepala Keluarga'");
         if(mysqli_num_rows($cek_warga_kepala) > 0) {
             // Update nama warga tersebut agar sama dengan inputan baru
             mysqli_query($koneksi, "UPDATE warga SET nama = '$kepala' WHERE no_kk = '$no_kk_baru' AND status_hub_keluarga = 'Kepala Keluarga'");
         }
-
-        // [LOG] CATAT EDIT KK
         $log_detail = "Memperbarui Data KK No: $no_kk_lama. Kepala Keluarga: $kepala (Data warga terkait juga disinkronisasi)";
         mysqli_query($koneksi, "INSERT INTO log_warga (nik, aksi, detail, id_admin) VALUES (NULL, 'Edit KK', '$log_detail', '$id_admin_log')");
 
@@ -94,28 +82,22 @@ if (isset($_POST['update_kk'])) {
     }
 }
 
-// 4. LOGIKA HAPUS DATA
 if (isset($_GET['hapus'])) {
     $kk_hapus = $_GET['hapus'];
-    
-    // Ambil info nama kepala dulu buat log
     $q_cek = mysqli_query($koneksi, "SELECT kepala_keluarga FROM keluarga WHERE no_kk='$kk_hapus'");
     $d_cek = mysqli_fetch_array($q_cek);
     $nama_kepala = $d_cek['kepala_keluarga'];
 
     $query = "DELETE FROM keluarga WHERE no_kk = '$kk_hapus'";
     if (mysqli_query($koneksi, $query)) {
-        // [LOG] CATAT HAPUS KK
         $log_detail = "Menghapus KK No: $kk_hapus ($nama_kepala) beserta seluruh anggota keluarga di dalamnya.";
         mysqli_query($koneksi, "INSERT INTO log_warga (nik, aksi, detail, id_admin) VALUES (NULL, 'Hapus KK', '$log_detail', '$id_admin_log')");
-
         echo "<script>alert('Data KK Berhasil Dihapus!'); window.location='data_klg.php';</script>";
     } else {
         echo "<script>alert('Gagal Hapus: " . mysqli_error($koneksi) . "');</script>";
     }
 }
 
-// 5. AMBIL DATA KELUARGA
 $data_keluarga = [];
 $result = mysqli_query($koneksi, "SELECT * FROM keluarga ORDER BY kepala_keluarga ASC");
 while($row = mysqli_fetch_assoc($result)) {

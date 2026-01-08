@@ -2,15 +2,12 @@
 include 'koneksi.php';
 
 if (isset($_POST['daftar_kk'])) {
-    // TANGKAP DATA
     $no_kk          = mysqli_real_escape_string($koneksi, $_POST['no_kk']);
     $kepala_keluarga= mysqli_real_escape_string($koneksi, $_POST['kepala_keluarga']);
     $alamat         = mysqli_real_escape_string($koneksi, $_POST['alamat']);
     $rt             = mysqli_real_escape_string($koneksi, $_POST['rt']);
     $rw             = mysqli_real_escape_string($koneksi, $_POST['rw']);
     $kode_pos       = mysqli_real_escape_string($koneksi, $_POST['kode_pos']);
-
-    // Inputan Manual Wilayah
     $kelurahan      = mysqli_real_escape_string($koneksi, $_POST['kelurahan']);
     $kecamatan      = mysqli_real_escape_string($koneksi, $_POST['kecamatan']);
     $kota           = mysqli_real_escape_string($koneksi, $_POST['kota']);
@@ -22,7 +19,6 @@ if (isset($_POST['daftar_kk'])) {
     if (mysqli_num_rows($cek_kk) > 0) {
         echo "<script>alert('Nomor KK sudah terdaftar! Silakan langsung daftar akun warga.'); window.location='daftar.php';</script>";
     } else {
-        // QUERY SIMPAN
         $query = "INSERT INTO keluarga (no_kk, kepala_keluarga, alamat, rt, rw, kode_pos, kelurahan, kecamatan, kota, provinsi)
                   VALUES ('$no_kk', '$kepala_keluarga', '$alamat', '$rt', '$rw', '$kode_pos', '$kelurahan', '$kecamatan', '$kota', '$provinsi')";
         

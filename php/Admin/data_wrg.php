@@ -7,27 +7,22 @@ if (!isset($_SESSION['nik']) || $_SESSION['role'] != 'admin') {
     exit();
 }
 
-// [LOG] AMBIL ID ADMIN UNTUK RIWAYAT
 $nik_admin_session = $_SESSION['nik'];
 $q_admin_log = mysqli_query($koneksi, "SELECT id_admin FROM admin WHERE nik = '$nik_admin_session'");
 $d_admin_log = mysqli_fetch_array($q_admin_log);
 $id_admin_log = $d_admin_log['id_admin'];
 
-// AMBIL DAFTAR KK
 $list_kk = [];
 $query_kk_list = mysqli_query($koneksi, "SELECT no_kk, kepala_keluarga FROM keluarga ORDER BY no_kk ASC");
 while($row_kk = mysqli_fetch_assoc($query_kk_list)) {
     $list_kk[] = $row_kk;
 }
 
-// [BAGIAN 1] TAMBAH DATA
 if (isset($_POST['tambah_warga'])) {
     $nik            = mysqli_real_escape_string($koneksi, $_POST['nik']);
     $nama           = mysqli_real_escape_string($koneksi, $_POST['nama']);
     $no_kk_input    = $_POST['no_kk'];
     $no_kk          = !empty($no_kk_input) ? "'".mysqli_real_escape_string($koneksi, $no_kk_input)."'" : "NULL";
-    
-    // ... (Variabel lain sama seperti sebelumnya) ...
     $tempat_lahir   = mysqli_real_escape_string($koneksi, $_POST['tempat_lahir']);
     $tanggal_lahir  = mysqli_real_escape_string($koneksi, $_POST['tanggal_lahir']);
     $jenis_kelamin  = mysqli_real_escape_string($koneksi, $_POST['jenis_kelamin']);
@@ -37,13 +32,10 @@ if (isset($_POST['tambah_warga'])) {
     $pekerjaan      = mysqli_real_escape_string($koneksi, $_POST['pekerjaan']);
     $agama          = mysqli_real_escape_string($koneksi, $_POST['agama']);
     $no_hp          = mysqli_real_escape_string($koneksi, $_POST['no_hp']);
-    
     $password_input = $_POST['password']; 
     $password_hash  = password_hash($password_input, PASSWORD_DEFAULT);
-
-    // Validasi NIK & Kepala Keluarga
     $cek_nik = mysqli_query($koneksi, "SELECT nik FROM warga WHERE nik = '$nik'");
-    
+
     $validasi_kk_aman = true;
     if ($status_hub == 'Kepala Keluarga' && !empty($no_kk_input)) {
         $cek_head = mysqli_query($koneksi, "SELECT nama FROM warga WHERE no_kk = '$no_kk_input' AND status_hub_keluarga = 'Kepala Keluarga'");
@@ -57,7 +49,7 @@ if (isset($_POST['tambah_warga'])) {
     if (mysqli_num_rows($cek_nik) > 0) {
         echo "<script>alert('Gagal: NIK sudah terdaftar!');</script>";
     } elseif (!$validasi_kk_aman) {
-        // Stop
+
     } else {
         $query_tambah = "INSERT INTO warga (
             nik, no_kk, nama, password, tempat_lahir, tanggal_lahir, jenis_kelamin, 
@@ -66,18 +58,12 @@ if (isset($_POST['tambah_warga'])) {
             '$nik', $no_kk, '$nama', '$password_hash', '$tempat_lahir', '$tanggal_lahir', '$jenis_kelamin', 
             '$status_hub', '$status_kawin', '$pendidikan', '$pekerjaan', '$agama', '$no_hp'
         )";
-
         if (mysqli_query($koneksi, $query_tambah)) {
-            // Sinkronisasi KK
             if ($status_hub == 'Kepala Keluarga' && !empty($no_kk_input)) {
                 mysqli_query($koneksi, "UPDATE keluarga SET kepala_keluarga = '$nama' WHERE no_kk = '$no_kk_input'");
             }
-
-            // [LOG] CATAT INSERT
-            // Kita simpan NIK & Nama di text detail agar aman kalau data dihapus
             $log_detail = "Menambahkan warga baru. NIK: $nik, Nama: $nama";
             mysqli_query($koneksi, "INSERT INTO log_warga (nik, aksi, detail, id_admin) VALUES ('$nik', 'Tambah Warga', '$log_detail', '$id_admin_log')");
-
             echo "<script>alert('Data Warga Berhasil Ditambahkan!'); window.location='data_wrg.php';</script>";
         } else {
             echo "<script>alert('Gagal Tambah: " . mysqli_error($koneksi) . "');</script>";
@@ -85,14 +71,11 @@ if (isset($_POST['tambah_warga'])) {
     }
 }
 
-// [BAGIAN 2] UPDATE DATA
 if (isset($_POST['update_warga'])) {
     $nik_lama       = $_POST['nik']; 
     $no_kk_input    = $_POST['no_kk'];
     $no_kk_update   = !empty($no_kk_input) ? "'".mysqli_real_escape_string($koneksi, $no_kk_input)."'" : "NULL";
-
     $nama           = mysqli_real_escape_string($koneksi, $_POST['nama']);
-    // ... (Tangkap variabel lain) ...
     $tempat_lahir   = mysqli_real_escape_string($koneksi, $_POST['tempat_lahir']);
     $tanggal_lahir  = mysqli_real_escape_string($koneksi, $_POST['tanggal_lahir']);
     $jenis_kelamin  = mysqli_real_escape_string($koneksi, $_POST['jenis_kelamin']);
@@ -103,7 +86,6 @@ if (isset($_POST['update_warga'])) {
     $agama          = mysqli_real_escape_string($koneksi, $_POST['agama']);
     $no_hp          = mysqli_real_escape_string($koneksi, $_POST['no_hp']);
 
-    // Validasi KK
     $validasi_kk_aman = true;
     if ($status_hub == 'Kepala Keluarga' && !empty($no_kk_input)) {
         $cek_head = mysqli_query($koneksi, "SELECT nama FROM warga WHERE no_kk = '$no_kk_input' AND status_hub_keluarga = 'Kepala Keluarga' AND nik != '$nik_lama'");
@@ -130,15 +112,12 @@ if (isset($_POST['update_warga'])) {
                         WHERE nik = '$nik_lama'";
 
         if (mysqli_query($koneksi, $query_update)) {
-            // Sinkronisasi KK
             if ($status_hub == 'Kepala Keluarga' && !empty($no_kk_input)) {
                 mysqli_query($koneksi, "UPDATE keluarga SET kepala_keluarga = '$nama' WHERE no_kk = '$no_kk_input'");
             }
 
-            // [LOG] CATAT UPDATE
             $log_detail = "Mengubah data profil warga. NIK: $nik_lama, Nama: $nama";
             mysqli_query($koneksi, "INSERT INTO log_warga (nik, aksi, detail, id_admin) VALUES ('$nik_lama', 'Edit Warga', '$log_detail', '$id_admin_log')");
-
             echo "<script>alert('Data Berhasil Diperbarui!'); window.location='data_wrg.php';</script>";
         } else {
             echo "<script>alert('Gagal Update: " . mysqli_error($koneksi) . "');</script>";
@@ -146,41 +125,26 @@ if (isset($_POST['update_warga'])) {
     }
 }
 
-// [BAGIAN 3] HAPUS DATA
 if (isset($_GET['hapus'])) {
     $nik_hapus = $_GET['hapus'];
-    
-    // Ambil info nama sebelum dihapus untuk ditaruh di log
     $cek_hapus = mysqli_query($koneksi, "SELECT nama, no_kk, status_hub_keluarga FROM warga WHERE nik = '$nik_hapus'");
     $data_hapus = mysqli_fetch_assoc($cek_hapus);
     $nama_dihapus = $data_hapus['nama'];
-
     $query_hapus = "DELETE FROM warga WHERE nik = '$nik_hapus'";
     
     if (mysqli_query($koneksi, $query_hapus)) {
-        // Sinkronisasi KK
         if ($data_hapus['status_hub_keluarga'] == 'Kepala Keluarga' && !empty($data_hapus['no_kk'])) {
             $kk_target = $data_hapus['no_kk'];
             mysqli_query($koneksi, "UPDATE keluarga SET kepala_keluarga = NULL WHERE no_kk = '$kk_target'");
         }
-
-        // [LOG] CATAT HAPUS
-        // Nah, disini NIK-nya akan masuk ke tabel log sebagai NULL (karena constraint ON DELETE SET NULL),
-        // Tapi kita punya backup infonya di kolom detail.
         $log_detail = "Menghapus data warga. NIK: $nik_hapus, Nama: $nama_dihapus";
-        
-        // Kita masukkan log *SETELAH* hapus. 
-        // Karena constraint-nya SET NULL, kita bisa insert log dengan nik = NULL atau nik lama (tapi akan jadi NULL kalau constraint jalan saat delete).
-        // Triknya: Kita insert lognya dengan NIK NULL saja langsung, karena NIK aslinya sudah tidak ada di tabel induk.
         mysqli_query($koneksi, "INSERT INTO log_warga (nik, aksi, detail, id_admin) VALUES (NULL, 'Hapus Warga', '$log_detail', '$id_admin_log')");
-
         echo "<script>alert('Data Berhasil Dihapus'); window.location='data_wrg.php';</script>";
     } else {
         echo "<script>alert('Gagal Hapus: " . mysqli_error($koneksi) . "');</script>";
     }
 }
 
-// [BAGIAN 4] AMBIL DATA
 $data_warga = [];
 $query = "SELECT warga.*, keluarga.alamat FROM warga 
           LEFT JOIN keluarga ON warga.no_kk = keluarga.no_kk 
@@ -406,29 +370,22 @@ while($row = mysqli_fetch_assoc($result)) {
             <div class="modal-body bg-light">
                 
                 <?php
-                // Query Mengambil Log Khusus NIK ini
                 $nik_target_log = $row['nik'];
-                // Join ke tabel Admin (Optional) biar tau nama admin yang mengubah
                 $q_log = mysqli_query($koneksi, "SELECT log_warga.*, admin.nama as nama_admin 
                                                  FROM log_warga 
                                                  LEFT JOIN admin ON log_warga.id_admin = admin.id_admin
                                                  WHERE log_warga.nik = '$nik_target_log' 
                                                  ORDER BY log_warga.waktu DESC");
-                
                 if(mysqli_num_rows($q_log) > 0) {
                     echo '<div class="list-group">';
                     while($log = mysqli_fetch_array($q_log)) {
-                        // Formatting Waktu
                         $waktu = date('d M Y, H:i', strtotime($log['waktu']));
-                        
-                        // Menentukan Warna Badge berdasarkan Aksi
                         $badge_color = 'bg-secondary';
                         if($log['aksi'] == 'Tambah Warga') $badge_color = 'bg-success';
                         if($log['aksi'] == 'Edit Warga') $badge_color = 'bg-warning text-dark';
                         if($log['aksi'] == 'Hapus Warga') $badge_color = 'bg-danger';
                         if($log['aksi'] == 'Perubahan Disetujui') $badge_color = 'bg-primary';
                         if($log['aksi'] == 'Pengajuan Ditolak') $badge_color = 'bg-danger';
-
                         echo '
                         <div class="list-group-item list-group-item-action mb-2 border rounded shadow-sm">
                             <div class="d-flex w-100 justify-content-between align-items-center mb-1">

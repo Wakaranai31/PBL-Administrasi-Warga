@@ -1,11 +1,8 @@
 <?php
 include 'koneksi.php';
-// Hitung Jumlah Warga
 $query_warga = mysqli_query($koneksi, "SELECT COUNT(*) as total FROM warga");
 $data_warga = mysqli_fetch_assoc($query_warga);
 $jumlah_warga = $data_warga['total'];
-
-// Hitung Jumlah Keluarga (KK)
 $query_kk = mysqli_query($koneksi, "SELECT COUNT(*) as total FROM keluarga");
 $data_kk = mysqli_fetch_assoc($query_kk);
 $jumlah_kk = $data_kk['total'];

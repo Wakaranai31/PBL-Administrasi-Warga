@@ -2,18 +2,13 @@
 session_start();
 include '../koneksi.php';
 
-// Cek Keamanan
 if (!isset($_SESSION['nik']) || $_SESSION['role'] != 'admin') {
     header("Location: ../login.php");
     exit();
 }
-
-// --- LOGIKA FILTER LAPORAN ---
 $kategori = isset($_GET['kategori']) ? $_GET['kategori'] : '';
 $data_laporan = [];
 $judul_laporan = "";
-
-// Default Query
 if ($kategori == 'semua_warga') {
     $judul_laporan = "Laporan Seluruh Data Warga";
     $query = "SELECT * FROM warga ORDER BY nama ASC";
@@ -55,7 +50,6 @@ elseif ($kategori == 'anak') {
             <div class="d-flex justify-content-between align-items-center mb-4 btn-cetak-area">
                 <h2><i class="bi bi-file-earmark-text-fill"></i>Rekap Data</h2>
             </div>
-
             <div class="card filter-card shadow-sm">
                 <h4 class="mb-3 text-primary"><i class="bi bi-filter-circle"></i> Pilih Kategori</h4>
                 <form method="GET" action="">
@@ -74,11 +68,8 @@ elseif ($kategori == 'anak') {
                     </div>
                 </form>
             </div>
-
             <?php if (!empty($kategori) && isset($result)): ?>
-
                 <link rel="stylesheet" href="../../css/style.css?v=1.1">
-                
                 <div class="card shadow">
                     <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center btn-cetak-area">
                         <h5 class="mb-0 fw-bold text-uppercase text-primary"><?= $judul_laporan; ?></h5>
@@ -87,20 +78,17 @@ elseif ($kategori == 'anak') {
                             <a href="export.php?kategori=<?= $kategori; ?>" target="_blank" class="btn btn-success text-white">
                                 <i class="bi bi-file-earmark-spreadsheet-fill"></i> Export Data (Excel/PDF)
                             </a>
-
                             <button onclick="window.print()" class="btn btn-primary">
                                 <i class="bi bi-printer-fill"></i> Cetak PDF
                             </button>
                         </div>
                     </div>
-
                     <div class="text-center mt-3 d-none d-print-block">
                         <h3 class="fw-bold text-uppercase">Laporan Data Kependudukan</h3>
                         <h5 class="fw-bold">RT 03 / RW 05 - KOTA BATAM</h5>
                         <h6 class="text-decoration-underline"><?= $judul_laporan; ?></h6>
                         <br>
                     </div>
-
                     <div class="card-body">
                         <div class="table-responsive">
                             <table class="table table-bordered table-striped align-middle">
@@ -174,7 +162,6 @@ elseif ($kategori == 'anak') {
                         <div class="mt-3">
                             <strong>Total Data: </strong> <?= mysqli_num_rows($result); ?> Baris
                         </div>
-
                         <div class="tanda-tangan">
                             <p>Batam, <?= date('d F Y'); ?></p>
                             <br><br><br>
@@ -182,7 +169,6 @@ elseif ($kategori == 'anak') {
                         </div>
                     </div>
                 </div>
-
             <?php else: ?>
                 <div class="alert alert-info border-start border-info border-4 text-center p-5">
                     <h1><i class="bi bi-bar-chart-line"></i></h1>
@@ -190,7 +176,6 @@ elseif ($kategori == 'anak') {
                     <p>Pilih jenis data pada dropdown di atas, lalu klik tombol <b>Tampilkan</b>.</p>
                 </div>
             <?php endif; ?>
-
         </div>
     </div>
 

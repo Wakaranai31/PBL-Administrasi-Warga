@@ -2,30 +2,21 @@
 session_start();
 include '../koneksi.php';
 
-
-// 1. Cek Login
 if (!isset($_SESSION['nik'])) {
     echo "<script>window.location='../login.php';</script>";
     exit();
 }
 
 $nik_login = $_SESSION['nik'];
-
-// 2. Ambil Data User & JOIN Keluarga
-// Gunakan LEFT JOIN agar jika KK hilang, data user tetap bisa diambil (untuk dicek)
 $query_user = mysqli_query($koneksi, "SELECT warga.*, keluarga.kepala_keluarga, keluarga.alamat, keluarga.rt, keluarga.rw, keluarga.kelurahan 
                                     FROM warga 
                                     LEFT JOIN keluarga ON warga.no_kk = keluarga.no_kk 
                                     WHERE warga.nik='$nik_login'");
 $user_data = mysqli_fetch_array($query_user);
-
-// --- [FIX: SABUK PENGAMAN] ---
 if (!$user_data) {
-    // Jika user benar-benar hilang dari database
     echo "<script>alert('Data akun Anda tidak ditemukan. Silakan Login ulang.'); window.location='../login.php';</script>";
     exit();
 }
-// Jika user ada, TAPI data keluarganya (KK) kosong/null (Broken Link)
 if ($user_data['no_kk'] == NULL || $user_data['kepala_keluarga'] == NULL) {
     echo "<div class='content'>
             <div class='page'>
@@ -37,14 +28,10 @@ if ($user_data['no_kk'] == NULL || $user_data['kepala_keluarga'] == NULL) {
                 </div>
             </div>
         </div>";
-    include "footer.php"; // Opsional
+    include "footer.php"; 
     exit();
 }
-// -----------------------------
-
 $no_kk_user = $user_data['no_kk'];
-
-// 3. Ambil Anggota Keluarga
 $query_keluarga = mysqli_query($koneksi, "SELECT * FROM warga WHERE no_kk='$no_kk_user' ORDER BY CASE WHEN status_hub_keluarga = 'Kepala Keluarga' THEN 1 ELSE 2 END");
 ?>
 

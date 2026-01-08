@@ -2,13 +2,11 @@
 include 'koneksi.php';
 
 if (isset($_POST['daftar'])) {
-    // TANGKAP DATA INPUT
     $no_kk          = mysqli_real_escape_string($koneksi, $_POST['no_kk']);
     $nik            = mysqli_real_escape_string($koneksi, $_POST['nik']);
     $nama           = mysqli_real_escape_string($koneksi, $_POST['nama']);
     $pass1          = $_POST['password'];
     $pass2          = $_POST['password2'];
-    
     $tempat_lahir   = $_POST['tempat_lahir'];
     $tanggal_lahir  = $_POST['tanggal_lahir'];
     $jenis_kelamin  = $_POST['jenis_kelamin'];
@@ -19,14 +17,11 @@ if (isset($_POST['daftar'])) {
     $pekerjaan      = $_POST['pekerjaan'];
     $no_hp          = $_POST['no_hp'];
 
-    // VALIDASI PASSWORD
     if ($pass1 !== $pass2) {
         echo "<script>alert('Password konfirmasi tidak cocok!');</script>";
     } else {
-        // 1. CEK NO KK (Apakah KK terdaftar?)
         $cek_kk = mysqli_query($koneksi, "SELECT no_kk FROM keluarga WHERE no_kk = '$no_kk'");
         
-        // 2. CEK NIK (Apakah sudah ada?)
         $cek_nik = mysqli_query($koneksi, "SELECT nik FROM warga WHERE nik = '$nik'");
 
         if (mysqli_num_rows($cek_kk) == 0) {
@@ -34,7 +29,6 @@ if (isset($_POST['daftar'])) {
         } elseif (mysqli_num_rows($cek_nik) > 0) {
             echo "<script>alert('NIK sudah terdaftar! Silakan Login.');</script>";
         } else {
-            // [VALIDASI BARU] SATPAM KEPALA KELUARGA
             $validasi_aman = true;
             if($status_hub == 'Kepala Keluarga') {
                 $cek_head = mysqli_query($koneksi, "SELECT nama FROM warga WHERE no_kk = '$no_kk' AND status_hub_keluarga = 'Kepala Keluarga'");
@@ -46,7 +40,6 @@ if (isset($_POST['daftar'])) {
             }
 
             if($validasi_aman) {
-                // 3. SIMPAN DATA
                 $pass_hash = password_hash($pass1, PASSWORD_DEFAULT);
                 $query_warga = "INSERT INTO warga (
                     nik, no_kk, nama, password, 
@@ -61,7 +54,6 @@ if (isset($_POST['daftar'])) {
                   )";
 
                 if (mysqli_query($koneksi, $query_warga)) {
-                    // [SINKRONISASI] Jika pendaftar adalah Kepala Keluarga, update tabel keluarga
                     if($status_hub == 'Kepala Keluarga') {
                         mysqli_query($koneksi, "UPDATE keluarga SET kepala_keluarga = '$nama' WHERE no_kk = '$no_kk'");
                     }

@@ -2,13 +2,11 @@
 session_start();
 include '../koneksi.php'; 
 
-// 1. CEK KEAMANAN
 if (!isset($_SESSION['nik']) || $_SESSION['role'] != 'admin') {
     header("Location: ../login.php");
     exit();
 }
 
-// 2. LOGIKA PENCARIAN
 $data_warga = [];
 $keyword = "";
 $pencarian_dilakukan = false;
@@ -16,10 +14,7 @@ $pencarian_dilakukan = false;
 if (isset($_GET['keyword'])) {
     $pencarian_dilakukan = true;
     $keyword = $_GET['keyword'];
-    
     $safe_keyword = mysqli_real_escape_string($koneksi, $keyword);
-
-    // Gunakan LEFT JOIN agar bisa mengambil data ALAMAT dari tabel keluarga
     $query = "SELECT warga.*, keluarga.alamat 
               FROM warga 
               LEFT JOIN keluarga ON warga.no_kk = keluarga.no_kk

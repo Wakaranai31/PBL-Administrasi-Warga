@@ -5,35 +5,27 @@ include 'koneksi.php';
 if (isset($_POST['login'])) {
     $nik = mysqli_real_escape_string($koneksi, $_POST['nik']);
     $password = $_POST['password'];
-
-    // 1. CEK TABEL ADMIN 
     $cek_admin = mysqli_query($koneksi, "SELECT * FROM admin WHERE nik = '$nik'");
     $data_admin = mysqli_fetch_assoc($cek_admin);
-
-    // 2. CEK KE TABEL WARGA (Kalau di admin tidak ketemu)
     $cek_warga = mysqli_query($koneksi, "SELECT * FROM warga WHERE nik = '$nik'");
     $data_warga = mysqli_fetch_assoc($cek_warga);
 
     if ($data_admin) {
-        // Jika username ditemukan di tabel ADMIN
         if (password_verify($password, $data_admin['password'])) {
-            // Password Benar
             $_SESSION['nik'] = $data_admin['nik'];
             $_SESSION['nama'] = $data_admin['nama'];
-            $_SESSION['role'] = 'admin'; // Tandai sebagai admin
+            $_SESSION['role'] = 'admin';
             header("Location: Admin/index.php");
             exit();
         } else {
             $error = "Password Admin salah!";
         }
     } elseif ($data_warga) {
-        // Jika username ditemukan di tabel WARGA
         if (password_verify($password, $data_warga['password'])) {
-            // Password Benar
             $_SESSION['nik'] = $data_warga['nik'];
             $_SESSION['nama'] = $data_warga['nama'];
-            $_SESSION['role'] = 'warga'; // Tandai sebagai warga
-            header("Location: Warga/index.php"); // Ganti dengan halaman tujuan warga
+            $_SESSION['role'] = 'warga'; 
+            header("Location: Warga/index.php"); 
             exit();
         } else {
             $error = "Password Warga salah!";

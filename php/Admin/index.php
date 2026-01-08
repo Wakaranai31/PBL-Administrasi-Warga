@@ -1,31 +1,21 @@
 <?php 
 session_start();
-include '../koneksi.php'; // Hubungkan ke database
+include '../koneksi.php'; 
 
-// --- 1. CEK KEAMANAN (SATPAM) ---
-// Kalau belum login, atau role-nya bukan admin, tendang keluar!
 if (!isset($_SESSION['nik']) || $_SESSION['role'] != 'admin') {
     header("Location: ../login.php");
     exit();
 }
 
-// --- 2. HITUNG DATA DARI DATABASE ---
-
-// Hitung Jumlah Warga
 $query_warga = mysqli_query($koneksi, "SELECT COUNT(*) as total FROM warga");
 $data_warga = mysqli_fetch_assoc($query_warga);
 $jumlah_warga = $data_warga['total'];
-
-// Hitung Jumlah Keluarga (KK)
 $query_kk = mysqli_query($koneksi, "SELECT COUNT(*) as total FROM keluarga");
 $data_kk = mysqli_fetch_assoc($query_kk);
 $jumlah_kk = $data_kk['total'];
-
-// Hitung Pengajuan (Anggap ini Surat Masuk)
 $query_surat = mysqli_query($koneksi, "SELECT COUNT(*) as total FROM pengajuan_perubahan");
 $data_surat = mysqli_fetch_assoc($query_surat);
 $jumlah_surat = $data_surat['total'];
-
 ?>
 
 <?php include "header.php"; ?>

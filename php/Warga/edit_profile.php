@@ -8,14 +8,10 @@ if (!isset($_SESSION['nik']) || $_SESSION['role'] != 'warga') {
 }
 
 $nik_login = $_SESSION['nik'];
-
-// Ambil data
 $query = mysqli_query($koneksi, "SELECT * FROM warga WHERE nik='$nik_login'");
 $data = mysqli_fetch_array($query);
 
-// LOGIKA PENGAJUAN
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Tangkap input
     $nama           = mysqli_real_escape_string($koneksi, $_POST['nama']);
     $tempat_lahir   = mysqli_real_escape_string($koneksi, $_POST['tempat_lahir']);
     $tanggal_lahir  = mysqli_real_escape_string($koneksi, $_POST['tanggal_lahir']);
@@ -25,13 +21,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $pendidikan     = mysqli_real_escape_string($koneksi, $_POST['pendidikan']);
     $pekerjaan      = mysqli_real_escape_string($koneksi, $_POST['pekerjaan']);
     $status_perkawinan = mysqli_real_escape_string($koneksi, $_POST['status_perkawinan']);
-
     $jenis_perubahan = "Update Biodata";
     $keterangan      = "Warga mengajukan perubahan profil.";
     $status          = "Pending";
-
     $cek_pending = mysqli_query($koneksi, "SELECT * FROM pengajuan_perubahan WHERE nik='$nik_login' AND status='Pending'");
-    
     if(mysqli_num_rows($cek_pending) > 0) {
         $error = "Anda masih memiliki pengajuan yang belum diproses Admin.";
     } else {
@@ -45,7 +38,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             '$agama', '$no_hp', '$pendidikan', '$pekerjaan', '$status_perkawinan')";
             
         $insert = mysqli_query($koneksi, $query_insert);
-        
         if ($insert) {
             $success = "Permintaan perubahan berhasil dikirim! Menunggu persetujuan Admin.";
         } else {
@@ -64,14 +56,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <h2>Edit Biodata Saya</h2>
             <a href="profil.php" class="btn btn-secondary btn-sm"><i class="bi bi-arrow-left"></i> Kembali</a>
         </div>
-
         <div class="row justify-content-center">
             <div class="col-md-10">
                 <div class="card">
-
                     <?php if (isset($success)) echo "<div class='alert alert-success'><i class='bi bi-check-circle'></i> $success</div>"; ?>
                     <?php if (isset($error)) echo "<div class='alert alert-danger'><i class='bi bi-exclamation-triangle'></i> $error</div>"; ?>
-
                     <form method="POST" action="">
                         
                         <div class="row bg-light p-2 mb-3 rounded border">
@@ -91,14 +80,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 <input type="text" class="form-control form-control-sm bg-white" value="<?= $data['status_hub_keluarga']; ?>" readonly>
                             </div>
                         </div>
-
                         <div class="row">
                             <div class="col-md-12 mb-3">
                                 <label class="fw-bold">Nama Lengkap</label>
                                 <input type="text" class="form-control" name="nama" value="<?= $data['nama']; ?>" required>
                             </div>
                         </div>
-
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label class="fw-bold">Tempat Lahir</label>
@@ -109,7 +96,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 <input type="date" class="form-control" name="tanggal_lahir" value="<?= $data['tanggal_lahir']; ?>" required>
                             </div>
                         </div>
-
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label class="fw-bold">Jenis Kelamin</label>
@@ -131,7 +117,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 </select>
                             </div>
                         </div>
-
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label class="fw-bold">Pendidikan</label>
@@ -150,7 +135,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 <input type="text" class="form-control" name="pekerjaan" value="<?= $data['pekerjaan']; ?>">
                             </div>
                         </div>
-
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label class="fw-bold">Status Perkawinan</label>

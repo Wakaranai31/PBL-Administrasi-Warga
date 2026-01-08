@@ -2,30 +2,21 @@
 session_start();
 include '../koneksi.php'; 
 
-// 1. CEK KEAMANAN
 if (!isset($_SESSION['nik']) || $_SESSION['role'] != 'warga') {
     header("Location: ../login.php");
     exit();
 }
 
-// 2. AMBIL DATA WARGA YANG LOGIN
 $nik = $_SESSION['nik'];
 $query_warga = mysqli_query($koneksi, "SELECT * FROM warga WHERE nik = '$nik'");
 $data_warga = mysqli_fetch_assoc($query_warga);
-
-// 3. AMBIL DATA KELUARGA & KEPALA KELUARGA ASLI
 $data_keluarga = null;
 $nama_kepala_keluarga = "Belum Terdata"; // Default
 
 if (!empty($data_warga['no_kk'])) {
     $no_kk = $data_warga['no_kk'];
-    
-    // Ambil Data Alamat KK dari tabel keluarga
     $query_kk = mysqli_query($koneksi, "SELECT * FROM keluarga WHERE no_kk = '$no_kk'");
     $data_keluarga = mysqli_fetch_assoc($query_kk);
-
-    // [LOGIKA BARU] Cari Siapa Kepala Keluarga Sebenarnya dari tabel WARGA
-    // Ini lebih akurat daripada mengambil text dari tabel keluarga
     $query_head = mysqli_query($koneksi, "SELECT nama FROM warga WHERE no_kk = '$no_kk' AND status_hub_keluarga = 'Kepala Keluarga'");
     if(mysqli_num_rows($query_head) > 0){
         $data_head = mysqli_fetch_assoc($query_head);
