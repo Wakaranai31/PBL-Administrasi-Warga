@@ -1,3 +1,14 @@
+<?php
+include 'koneksi.php';
+$query_warga = mysqli_query($koneksi, "SELECT COUNT(*) as total FROM warga");
+$data_warga = mysqli_fetch_assoc($query_warga);
+$jumlah_warga = $data_warga['total'];
+$query_kk = mysqli_query($koneksi, "SELECT COUNT(*) as total FROM keluarga");
+$data_kk = mysqli_fetch_assoc($query_kk);
+$jumlah_kk = $data_kk['total'];
+
+?>
+
 <!DOCTYPE html>
 <html lang="id">
 
@@ -8,20 +19,20 @@
     <title>Sistem Administrasi RT/RW</title>
 
     <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../fontawesome/css/all.min.css">
     <link rel="stylesheet" href="../css/style_hero.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
 </head>
 
 <body>
     <div class="main-wrapper">
         <nav class="navbar glass-effect">
             <div class="navbar-brand">
-                <i class="fa-solid fa-house-user"></i>
+                <i class="bi bi-people"></i>
                 <span>Administrasi Warga</span>
             </div>
             <div class="navbar-auth">
-                <a href="login.html" class="btn btn-login"><i class="fa-solid fa-user"></i> Login</a>
+                <a href="login.php" class="btn btn-login"><i class="bi bi-door-open-fill"></i> Login</a>
             </div>
         </nav>
 
@@ -31,15 +42,15 @@
                 <p class="hero-description">
                     Platform digital untuk untuk mengelola data warga, pelayanan, dan laporan dengan efisien.
                 </p>
-                <a href="#" class="btn btn-primary hero-cta">Pelajari Lebih Lanjut</a>
+                <a href="login.php" class="btn btn-primary hero-cta">Pelajari Lebih Lanjut</a>
             </div>
             <div class="hero-stats">
                 <div class="stat-card glass-effect">
-                    <p class="stat-number">0</p>
+                    <p class="stat-number"><?php echo $jumlah_warga; ?></p>
                     <p class="stat-label">Total Warga Terdaftar</p>
                 </div>
                 <div class="stat-card glass-effect">
-                    <p class="stat-number">0</p>
+                    <p class="stat-number"><?php echo $jumlah_kk; ?></p>
                     <p class="stat-label">Kepala Keluarga Aktif</p>
                 </div>
             </div>
