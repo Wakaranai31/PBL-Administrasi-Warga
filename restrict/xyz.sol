@@ -1,16 +1,20 @@
+// --- Ubah ekstensi menjadi .php 
+// --- Silahkan sesuaikan data admin yang di inginkan terlebih dahulu
+// --- Masuk ke direktori xyz.php untuk menambahkan data admin
+
 <?php
 include 'koneksi.php';
 
+// ----------------------------------
 // --- DATA ADMIN YANG MAU DIBUAT ---
-$nik_admin  = "1234567890123456";       // NIK atau Username Admin
+$nik_admin  = "1234567890123456";       // NIK Admin
 $pass_admin = "admin";    // Password Admin
 $nama_admin = "Budi Hartanto"; // Nama Lengkap
 // ----------------------------------
 
-// Enkripsi passwordnya
+
 $password_hashed = password_hash($pass_admin, PASSWORD_DEFAULT);
 
-// Masukkan ke database
 $query = "INSERT INTO admin (id_admin, nik, password, nama) 
           VALUES (1, '$nik_admin', '$password_hashed', '$nama_admin')";
 

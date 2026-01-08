@@ -1,6 +1,5 @@
 CREATE DATABASE waw_db;
 USE waw_db;
-
 -- Tabel Admin
 CREATE TABLE admin (
   id_admin int(2) NOT NULL,
@@ -79,11 +78,3 @@ CREATE TABLE log_warga (
   FOREIGN KEY (nik) REFERENCES warga(nik) ON DELETE SET NULL ON UPDATE CASCADE,
   FOREIGN KEY (id_admin) REFERENCES admin(id_admin) ON DELETE SET NULL ON UPDATE CASCADE
 );
-
--- ==========================================
--- INSERT DATA DUMMY ADMIN
--- password : admin
--- ==========================================
-
-INSERT INTO admin (id_admin, nik, password, nama) VALUES
-(1, '1234567890123456', '$2y$10$FjptIWWT6.bPF1iSBpMv0OFRNrXc0WTAkuN7umUDmngsKXNLkdBWW', 'Johanes Alpino'); 
